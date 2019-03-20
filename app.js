@@ -17,7 +17,7 @@ const people = [
 //localhost:3000/api/people
 app.get('/api/people' , (req , res ) => {
     res.status(200).json({
-       people
+      people: people
     })
 })
 app.listen(port, ()=> console.log(`express-api listening on port ${port}`));
