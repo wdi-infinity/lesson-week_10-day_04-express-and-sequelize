@@ -46,6 +46,22 @@ app.post("/api/person", (req, res) => {
     })
     .catch(e => console.log(e));
 });
+
+// Delete a Person
+app.delete("/api/person/:id", (req, res) => {
+  const ID = req.params.id;
+
+  models.Person.destroy({
+    where: { id: ID }
+  })
+    .then(person => {
+      res.status(200).json({
+        message: `${person} person deleted successfully`
+      });
+    })
+    .catch(e => console.log(e));
+});
+
 const PORT = 3000;
 app.listen(PORT, () =>
   console.log(`express-api app listening on port ${PORT}`)
