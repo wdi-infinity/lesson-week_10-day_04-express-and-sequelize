@@ -48,18 +48,37 @@ app.post("/api/person", (req, res) => {
 });
 
 // Delete a Person
+// app.delete("/api/person/:id", (req, res) => {
+//   const ID = req.params.id;
+
+//   models.Person.destroy({
+//     where: { id: ID }
+//   })
+//     .then(person => {
+//       res.status(200).json({
+//         message: `${person} person deleted successfully`
+//       });
+//     })
+//     .catch(e => console.log(e));
+// });
+
+// Delete a Person
 app.delete("/api/person/:id", (req, res) => {
   const ID = req.params.id;
-
-  models.Person.destroy({
-    where: { id: ID }
-  })
-    .then(person => {
-      res.status(200).json({
-        message: `${person} person deleted successfully`
-      });
-    })
-    .catch(e => console.log(e));
+  models.Person.findByPk(ID).then(person => {
+    if (person) {
+      person
+        .destroy()
+        .then(() => {
+          res.status(200).json({
+            message: `${person.first_name} deleted successfully`
+          });
+        })
+        .catch(e => console.log(e));
+    } else {
+      res.status(404).json({ message: "user not found" });
+    }
+  });
 });
 
 // Update a person
@@ -85,7 +104,7 @@ app.put("/api/person/:id", (req, res) => {
           first_name: req.body.first_name,
           last_name: req.body.last_name
         })
-        .then(person => {
+        .then(() => {
           res.status(200).json({
             message: `${person.first_name} updated successfully`
           });
