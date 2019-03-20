@@ -8,7 +8,7 @@ module.exports = {
       {first_name:'A',last_name:'AB',created_at:new Date,updated_at:new Date},
       {first_name:'B',last_name:'BA',created_at:new Date,updated_at:new Date}
   ], {});
-
+  
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
