@@ -8,5 +8,23 @@ app.get('/', (req, res) => {
         message: 'Hello from WDI 3'
     });
 });
+const people = [
+    {
+        firstName: 'Sara', lastName: 'Alawfi'
+    },
+    {
+        firstName: 'Moroj', lastName: 'Alawfi'
+    },
+    {
+        firstName: 'Alaa', lastName: 'Alawfi'
+    },
+];
+
+app.get('/api/people', (req, res) => {
+    res.status(200).json({
+        people: people
+    });
+
+});
 
 app.listen(port, () => console.log(`express-api app listen to port 3000 ${port}`))
