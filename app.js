@@ -1,10 +1,17 @@
 import express from 'express';
 import models from './models';
+import bodyParser from 'body-parser';
 import { read } from 'fs';
+
 //declear bath route
 const app = express();
 const port = 3000;
 
+/****Middleware ****/
+app.use(bodyParser.json());
+
+
+//Get person by Record ID
 app.get('/api/person/:id', (req, res) => {
     if (!isNaN(req.params.id)) {
         models.Person.findByPk(req.params.id)
@@ -21,9 +28,24 @@ app.get('/api/person/:id', (req, res) => {
     }
 });
 
-//res.status(200).json({ message: 'working' }) to check the process is working 
-//res.status(200).json({ user_id: req.params.id }); to check person data by id 
+//
+app.get('/api/people', (req, res) => {
+    res.status(200).json({
+        people: people
+    });
+});
 
+//create new person 
+app.post('/api/person', (req, res) => {
+    models.Person.create(req.body)
+        .then(personNewFromDB => {
+            res.status(201).json({ person: personNewFromDB });
+
+        }
+        )
+        .catch(e => console.log(e));
+
+});
 
 //const peopleList = [
 // { firstName: 'Nahed', lastName: "Hawsawi" },
@@ -33,13 +55,5 @@ app.get('/api/person/:id', (req, res) => {
 // { firstName: 'jaswer', lastName: "nawras" }
 
 // ]
-
-app.get('/api/people', (req, res) => {
-    res.status(200).json({
-        people: people
-    });
-});
-
-
 
 app.listen(3000, () => console.log(`express-api app listening on port 3000!${port}!`))
