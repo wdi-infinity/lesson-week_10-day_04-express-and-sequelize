@@ -1,10 +1,18 @@
 import express from 'express';
 import models from './models';
-
+import bodyParser from 'body-parser';
 
 const app = express();
 const port = 3000;
 
+
+/*** MiddleWare ***/
+app.use(bodyParser.json());
+
+
+/*** Routes ***/
+
+//Root route
 app.get('/', (req, res) => {
     res.status(200).json({
       message: 'Hello WDI-Infinity!'
@@ -24,6 +32,7 @@ app.get('/api/people', (req,res) => {
   
 });
 
+//to get a specifc person data
 app.get('/api/person/:id', (req,res) => {
     // did this line just to test if this command is working
     // res.status(200).json({message: 'working...'});
@@ -45,11 +54,16 @@ app.get('/api/person/:id', (req,res) => {
     }
     
 })
-// const people = [
-//     {firstName: 'saud', lastName: 'Almutairi'},
-//     {firstName: 'nors', lastName: 'Abdullah'},
-//     {firstName: 'mohammed', lastName: 'Saja'},
-// ]
+// create new person data
+app.post('/api/person', (req, res) => {
+    models.Person.create(req.body)
+    .then(person => {
+        //implment validations and conditions to increase the safety of the product.
+        res.status(201).json({person: person})
+    })
+    .catch(e => console.log(e));
+})
+
 
 
 app.listen(port, ()=> console.log(`working on port ${port}`));
