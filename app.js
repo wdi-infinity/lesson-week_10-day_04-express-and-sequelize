@@ -9,4 +9,24 @@ app.get('/', (req, res) => {
     });
 });
 
+
+
+app.get('/api/people', (req, res) => {
+    res.status(200).json({
+        people: peopleList
+    });
+});
+
+const peopleList = [
+    { firstName: 'Mohammed', lastName: 'Jameel' },
+    { firstName: 'Ahmed', lastName: 'Salaman' },
+    { firstName: 'Waleed', lastName: 'Ahmed' },
+    { firstName: 'Salem', lastName: 'Shehri' }
+];
+
+
+//localhost: 3000
+//localhost: 3000/api/people
+
+
 app.listen(port, () => console.log(`express-api app listeing on port ${port}!`))
