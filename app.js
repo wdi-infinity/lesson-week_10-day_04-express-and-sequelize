@@ -1,22 +1,25 @@
 import express from 'express';
 import models from './models';
+import { runInNewContext } from 'vm';
+import bodyParser from 'body-parser'
 
 const app = express();
 const port = 3000;
+
+/* Middleware */
+
+app.use(bodyParser.json());
+
+/** routes **/
+
+//Root Path
 app.get('/', (req, res) => {
     res.status(200).json({
         message: "Hello"
     });
 });
 
-// const peopleList =[
-//     {first_name: "Salem", last_name: "Turki"},
-//     {first_name: "Usman", last_name: "Basheer"},
-//     {first_name: "Ghadeer", last_name: "Turki"},
-//     {first_name: "Mohammad", last_name: "Jameel"},
-//     {first_name: "Hussah", last_name: "Alakeel"}
-// ];
-
+//Get all people
 app.get('/api/people', (req, res) => {
     models.Person.findAll()
     .then(peopleFromDb => {
@@ -28,6 +31,7 @@ app.get('/api/people', (req, res) => {
    
 });
 
+//Get person by Record ID
 app.get('/api/person/:id', (req, res) =>{
     if(!isNaN(req.params.id)) {
         models.Person.findByPk(req.params.id)
@@ -44,7 +48,18 @@ app.get('/api/person/:id', (req, res) =>{
 }
 });
 
-// localhost: 3000
-// localhost: 3000/
+// Create new person
+app.post('/api/person', (req, res) =>{
+    models.Person.create(req.body)
+    .then(personNewFromDB => {
+        res.status(201).json({
+            perosn: personNewFromDB
+        });
+    })
+    .catch(e => console.log(e))
+    
+});
+
+
 
 app.listen(port, () => console.log(`express-api and listening on port ${port}!`));
