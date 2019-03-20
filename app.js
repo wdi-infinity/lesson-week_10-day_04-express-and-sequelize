@@ -1,8 +1,16 @@
 import express from 'express';
 import models from './models';
+import bodyParser from 'body-parser';
 
 const app = express();
 const port = 3000;
+/* middleware */
+
+app.use(bodyParser.json());
+
+/* Routes*/
+
+//Root Path
 app.get('/', (req, res) => {
     res.status(200).json({
         message: "Hello wdi"
@@ -18,6 +26,7 @@ app.get('/', (req, res) => {
 //     { firstName: 'Rawan5', lastName: 'Alahmmadi' }
 // ]
 
+//Get all people
 app.get('/api/people', (req, res) => {
     models.Person.findAll()
         .then(people => {
@@ -46,6 +55,15 @@ app.get('/api/person/:id', (req, res) => {
 
 });
 
+app.post('/api/person', (req, res) => {
+    models.Person.create(req.body)
+        .then(person => {
+            res.status(201).json({ person: person });
+        })
+        .catch(e => console.log(e));
 
+
+
+});
 
 app.listen(3000, () => console.log(`express-api listening on port ${port}!`))
