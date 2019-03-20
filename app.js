@@ -1,8 +1,14 @@
 import express from 'express';
 import models from './models'
+import bodyParser from 'body-parser'
 const app = express();
 const port = 3000;
 
+
+/***middleware***/
+app.use(bodyParser.json());
+/***Routes***/
+//Root Path
 app.get('/', (req, res) => {
 
     res.status(200).json({
@@ -17,10 +23,10 @@ app.get('/', (req, res) => {
 //     { firstName: 'Anfal', lastName: 'jafrai' },
 //     { firstName: 'Ghadeer', lastName: 'ALkhathlan' },
 //     { firstName: 'Me', lastName: 'Me' },
-//     { firstName: 'Usman', lastName: 'Bashir' },
+//     { firstName: 'Usman', lastName: 'Bashir' },];
 
 
-// ];
+// Get ALl People
 app.get('/api/people', (req, res) => {
     models.Person.findAll()
         .then(peopleFromDB => {
@@ -40,6 +46,7 @@ app.get('/api/people', (req, res) => {
 
 
 });
+//Get person by Record ID
 app.get('/api/person/:id', (req, res) => {
     if (!isNaN(req.params.id)) {
 
@@ -58,6 +65,18 @@ app.get('/api/person/:id', (req, res) => {
 
         res.status(406).json({ error: 'Invalid ID' });
     }
+
+});
+//Create New Person
+app.post('/api/person', (req, res) => {
+    models.Person.create(req.body)
+        .then(personNewFromDB => {
+            res.status(201).json({ person: personNewFromDB });
+        })
+        .catch(e => console.log(e));
+
+
+
 
 });
 //localhost:3000
