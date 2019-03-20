@@ -1,7 +1,13 @@
 import express from 'express';
 import models from './models';
+import bodyParser from 'body-parser';
 const app = express();
 const port = 3000;
+
+
+/*** Middleware   */
+app.use(bodyParser.json());
+
 
 app.get('/', (req, res) => {
 res.status(200).json({
@@ -46,6 +52,19 @@ app.get('/api/person/:id', (req, res) => {
 else {
     res.status(200).json({ erroe: 'Invalid ID' })
 }
+});
+
+
+
+
+
+
+app.post('/api/person', (req, res) => {
+    models.Person.create(req.body)
+    .then(personNewFromDB => { 
+res.status(201).json({ person: personNewFromDB });
+    })
+    .catch(e => console.log(e)); 
 });
 
 
