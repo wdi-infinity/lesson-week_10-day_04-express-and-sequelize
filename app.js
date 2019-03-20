@@ -1,10 +1,17 @@
 import express from 'express';
 import models from './models';
+import bodyParser from 'body-parser';
 
 
 const app = express();
 const port = 3000;
 
+// Midle ware
+app.use(bodyParser.json());
+
+
+
+//Rout path
 app.get('/', (req,res) => {
  res.status(200).json({
  message: 'Hello WDI-infinty'
@@ -19,7 +26,7 @@ app.get('/', (req,res) => {
 //     {firstName: 'Micheal', lastName:'Fimann'}
 // ];
 
-
+//Rout get all people
 app.get('/api/people', (req,res) => {
     models.Person.findAll()
     .then(people => {
@@ -29,7 +36,7 @@ app.get('/api/people', (req,res) => {
     });
 
 
-
+ //Rout get person by id
     app.get('/api/person/:id', (req, res) => {
          if( !isNaN(req.params.id)){
                 models.Person.findByPk(req.params.id).then(person => {
@@ -44,6 +51,15 @@ app.get('/api/people', (req,res) => {
         res.status(406).json({error: 'Invalid ID'})
     }
       });
+
+// create new person 
+app.post('/api/person', (req,res) => {
+    models.Person.create(req.body)
+    .then(personnewformdb => {
+        res.status(201).json({ person: personnewformdb});
+    })
+    .catch(e => console.log(e));
+});
 
 
 // localhost:3000
