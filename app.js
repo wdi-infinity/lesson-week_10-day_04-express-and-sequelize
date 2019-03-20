@@ -1,4 +1,5 @@
 import express from 'express';
+import models from './models';
 
 const app = express();
 const port = 3000;
@@ -8,23 +9,52 @@ app.get('/', (req, res) => {
         message: "Hello WDI-Infinity!"
     });
 })
-const people = [
-    {
-        firstName: 'SARA', lastName: 'ALYAHYA'
-    },
-    {
-        firstName: 'Hessa', lastName: 'ALAQIL'
-    },
-    {
-        firstName: 'Fajer', lastName: 'ALBAKIRI'
-    }
-];
+// Dummy data
+// const people = [
+//     {
+//         firstName: 'SARA', lastName: 'ALYAHYA'
+//     },
+//     {
+//         firstName: 'Hessa', lastName: 'ALAQIL'
+//     },
+//     {
+//         firstName: 'Fajer', lastName: 'ALBAKIRI'
+//     }
+// ];
 // localhost:3000
 // localhost:3000/
 app.get('/api/people', (req, res) => {
-    res.status(200).json({
-        people: people
-    });
+    models.Person.findAll()
+        .then(peoplefromDB => {
+            res.status(200).json({
+                people: peoplefromDB
+            });
+        })
+        .catch(e => console.log(e));
 })
+
+
+// http://localhost:3000/api/person/2
+app.get('/api/person/:id', (req, res) => {
+    if (!isNaN(req.params.id)) {
+        models.Person.findByPk(req.params.id)
+            .then(person => {
+                if (person !== null) {
+                    res.status(200).json({
+                        person: person
+                    });
+                }
+                else {
+                    res.status(404).json({ error: 'Person Not Found' });
+                }
+
+            })
+            .catch(e => console.log(e));
+    }
+    else {
+        res.status(406).json({ error: 'Invalid ID' });
+    }
+
+});
 
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
