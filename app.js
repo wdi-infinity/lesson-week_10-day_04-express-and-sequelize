@@ -8,6 +8,21 @@ app.get('/', (req, res) => {
         message: 'Hello WDI-Infinity!'
     });
 
+    const peopleList = [
+        { firstName: 'Nahed', lastName: "Hawsawi" },
+        { firstName: 'Jone', lastName: "Jak" },
+        { firstName: 'Nahed', lastName: "Hawsawi" },
+        { firstName: 'jamal', lastName: "hamed" },
+        { firstName: 'jaswer', lastName: "nawras" }
+
+    ]
+
+    app.get('/api/people', (req, res) => {
+        res.status(200).json({
+            people: people
+        });
+    });
+
 
 });
 
