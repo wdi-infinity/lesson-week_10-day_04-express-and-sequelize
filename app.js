@@ -1,23 +1,27 @@
 import express from 'express';
 import models from './models';
+import bodyParser from 'body-parser';
 
 
 const app = express();
 
+
+///middleware////
+
+app.use(bodyParser.json());
+
+
+
+/// routes ///
+
+///route path ///
 app.get('/', (req ,res) => {
     res.status(200).json({
         message: 'Hello WDI-Infinity'
     })
 })
 
-// const peopleList =[
-//     {firstName: 'Asma', lastName: 'Quraishi'},
-//     {firstName: 'sara', lastName: 'ahmad'},
-//     {firstName: 'badriah', lastName: 'shehri'},
-//     {firstName: 'usman', lastName: 'bashir'},
-//     {firstName: 'reem', lastName: 'fahad'}
-// ];
-
+///get all people ///
 app.get('/api/people',(req,res)=>{
    models.Person.findAll()
    .then(peopleFromDB =>{
@@ -30,6 +34,7 @@ app.get('/api/people',(req,res)=>{
     });
 });
 
+/// get person by record ID ////
 app.get('/api/person/:id', (req, res) => {
     if( !isNaN(req.params.id) ) {
       models.Person.findByPk(req.params.id)
@@ -45,6 +50,21 @@ app.get('/api/person/:id', (req, res) => {
       res.status(406).json({ error: 'Invalid ID' });
     }
   });
+
+
+
+ app.post('/api/person', (req,res)=>{
+    models.Person.create(req.body)
+
+    .then(personNewFromDB => {
+
+     res.status(201).json({person:personNewFromDB})
+    })
+    .catch(e => console.log(e));
+ });
+
+
+
 
 const PORT = 3000;
 
