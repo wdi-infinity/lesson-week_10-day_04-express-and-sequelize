@@ -13,9 +13,9 @@ app.get('/',(req,res)=>{
 const people=[
     {firstName:'B',lastName:'BA'},
     {firstName:'A',lastName:'AB'},
-    {firstName:'C',lastName:'CA'}
-];
+    {firstName:'C',lastName:'CA'}];
 
+// Add people list API endpoint with dummy data
 app.get('/api/people',(req,res)=>{
     res.status(200).json({
         peopleKey:people
