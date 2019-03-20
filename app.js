@@ -1,9 +1,22 @@
 import express from 'express';
 import models from './models';
+import bodyParser from 'body-parser';
 
 const app = express();
 const port = 3000;
 
+/*** Middleware ***/
+
+app.use(bodyParser.json());
+
+//root path
+app.get('/', (req, res) => {
+    res.status(200).json({
+        message: "Hello wdi"
+    })
+})
+
+// Gets all people
 app.get('/api/people', (req, res) => {
 
     models.Person.findAll()
@@ -15,6 +28,7 @@ app.get('/api/people', (req, res) => {
         .catch(e => console.log(e));
 });
 
+// Get Person by ID
 app.get('/api/person/:id', (req, res) => {
 
     if (!isNaN(req.params.id)) {
@@ -33,6 +47,15 @@ app.get('/api/person/:id', (req, res) => {
         res.status(406).json({ error: "Invalid ID" });
     }
 
+});
+
+// Create New persone
+app.post('/api/person', (req, res) => {
+    models.Person.create(req.body)
+        .then(personNewFromDB => {
+            res.status(201).json({ person: personNewFromDB })
+        })
+        .catch(e => console.log(e));
 });
 
 const people = [
