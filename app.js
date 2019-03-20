@@ -44,16 +44,48 @@ app.get('/api/person/:id',(req,res)=>{
 
 // create new person 
 app.post('/api/person',(req,res)=>{
-    console.log(req.body)
-    if(req.body!== {}){
+    // the user should not create empty post
+    if(Object.keys(req.body).length !== 0){
     models.Person.create(req.body)
     .then(person=>{
       res.status(201).json({result:person});// person from DB
     }).catch(e=> console.log(e))
 }
 else{
-  res.status(200).json({error:'there is no person data '});}
+  res.status(400).json({error:'Your request is missing details '});}
+});
+
+// Update
+app.put('/api/person/:id',(req,res,next)=>{
+//update
+  models.Person.update(
+      {first_name:req.body.first_name,
+      last_name:req.body.last_name},
+      {where: {id:req.params.id}// updates the database with the new person name for the matching person id
 })
+
+  .then(()=>{
+    res.status(200).json({message:"Updated successfully"});
+  }).catch(e=> console.log(e))
+
+});
+
+app.delete('/api/person/:id',(req,res)=>{
+    Model.destroy({
+        where: {
+            // criteria
+        }
+    })
+//     console.log(req.body)
+//     if(req.body){
+//     models.Person.create(req.body)
+//     .then(person=>{
+//       res.status(201).json({result:person});// person from DB
+//     }).catch(e=> console.log(e))
+// }
+// else{
+//   res.status(200).json({error:'there is no person data '});}
+});
 
 const port=3000;
 app.listen(port,() => console.log(`express-api app listening on port ${port}`));
