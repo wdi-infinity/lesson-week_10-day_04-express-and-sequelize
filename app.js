@@ -24,9 +24,4 @@ const peopleList = [
     { firstName: 'Salem', lastName: 'Shehri' }
 ];
 
-
-//localhost: 3000
-//localhost: 3000/api/people
-
-
 app.listen(port, () => console.log(`express-api app listeing on port ${port}!`))
