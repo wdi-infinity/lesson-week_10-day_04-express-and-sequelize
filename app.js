@@ -1,7 +1,18 @@
+//you have to add this by yourself
 import express from 'express';
 import models from './models';
+import bodyParser from 'body-parser';
+
 const app = express();
 const port =3000;
+/**Middleware */
+app.use(bodyParser.json());
+
+
+
+//Routes
+
+//Root Path
 app.get ('/',(req,res)=>{
 res.status(200).json({
 message: "Hello WDI-Infinity!"
@@ -26,6 +37,9 @@ message: "Hello WDI-Infinity!"
 //localhost:3000
 //localhost:3000/api/people api is a convention
 //each apis must come after localhost:3000/api/ is the best way  
+
+
+//Get All people
 app.get('/api/people', (req, res) => {
     models.Person.findAll()
     //read data from database
@@ -37,7 +51,7 @@ app.get('/api/people', (req, res) => {
       .catch(e => console.log(e));
   });
 
-
+//Get person by Recored ID
 //http://localhost:3000/api/person/2
 app.get('/api/person/:id', (req, res) => {
     if( !isNaN(req.params.id) ) {
@@ -57,7 +71,17 @@ app.get('/api/person/:id', (req, res) => {
 //res.status(200).json({user_id: req.params.id});
 
 
+//post
+//no need for id cause the db will do it for me
+app.post('/api/person',(req,res) =>  {
+    models.Person.create(req.body)
+    .then(personNewFromDB => {
+        res.status(201).json({ person:personNewFromDB });
 
+    })
+    .catch(e => console.log(e));
+
+});
 
 
 
