@@ -62,6 +62,41 @@ app.delete("/api/person/:id", (req, res) => {
     .catch(e => console.log(e));
 });
 
+// Update a person
+// app.put("/api/person/:id", (req, res) => {
+//   const ID = req.params.id;
+//   models.Person.update(
+//     { first_name: req.body.first_name, last_name: req.body.last_name },
+//     { where: { id: ID } }
+//   )
+//     .then(r => {
+//       res.status(200).json({ message: `${r} updated successfully` });
+//     })
+//     .catch(e => console.log(e));
+// });
+
+// Update a person
+app.put("/api/person/:id", (req, res) => {
+  const ID = req.params.id;
+  models.Person.findByPk(ID).then(person => {
+    if (person) {
+      person
+        .update({
+          first_name: req.body.first_name,
+          last_name: req.body.last_name
+        })
+        .then(person => {
+          res.status(200).json({
+            message: `${person.first_name} updated successfully`
+          });
+        })
+        .catch(e => console.log(e));
+    } else {
+      res.status(404).json({ message: "user not found" });
+    }
+  });
+});
+
 const PORT = 3000;
 app.listen(PORT, () =>
   console.log(`express-api app listening on port ${PORT}`)
