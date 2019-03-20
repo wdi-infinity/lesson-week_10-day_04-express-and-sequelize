@@ -71,20 +71,15 @@ app.put('/api/person/:id',(req,res,next)=>{
 });
 
 app.delete('/api/person/:id',(req,res)=>{
-    Model.destroy({
+    models.Person.destroy({
         where: {
-            // criteria
-        }
+            id:req.params.id
+        }//dlete the person from database for the matching person id
     })
-//     console.log(req.body)
-//     if(req.body){
-//     models.Person.create(req.body)
-//     .then(person=>{
-//       res.status(201).json({result:person});// person from DB
-//     }).catch(e=> console.log(e))
-// }
-// else{
-//   res.status(200).json({error:'there is no person data '});}
+    .then(()=>{
+        res.status(200).json({message:"Deleted successfully"});
+      })
+    .catch(e=> console.log(e))
 });
 
 const port=3000;
