@@ -1,18 +1,20 @@
 import express from "express";
 import models from "./models";
+import bodyParser from "body-parser";
 
 const app = express();
 
+// Middleware
+app.use(bodyParser.json());
+
+// Routes ****
+
+// Root path
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Hello WDI-Infinity!" });
 });
 
-// const PEOPLE = [
-//   { firstName: "Ayman", lastName: "Faisal" },
-//   { firstName: "Abdullah", lastName: "Alfehaid" },
-//   { firstName: "Yasser", lastName: "Faisal" }
-// ];
-
+// Get all people
 app.get("/api/people", (req, res) => {
   models.Person.findAll()
     .then(people => {
@@ -21,6 +23,7 @@ app.get("/api/people", (req, res) => {
     .catch(e => console.log(e));
 });
 
+// Get person by Record ID
 app.get("/api/person/:id", (req, res) => {
   let id = req.params.id;
   if (!isNaN(id)) {
@@ -35,12 +38,14 @@ app.get("/api/person/:id", (req, res) => {
   }
 });
 
-// app.get("/api/person/:id", (req, res) => {
-//   res.status(200).json({
-//     message: "Working"
-//   });
-// });
-
+// Create a new Person
+app.post("/api/person", (req, res) => {
+  models.Person.create(req.body)
+    .then(newPerson => {
+      res.status(200).json({ person: newPerson });
+    })
+    .catch(e => console.log(e));
+});
 const PORT = 3000;
 app.listen(PORT, () =>
   console.log(`express-api app listening on port ${PORT}`)
