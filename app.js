@@ -65,4 +65,30 @@ app.post('/api/person' , (req , res) => {
   
 })
 
+//localhost:3000/api/person/:id to Update person at a time
+app.put('/api/person/:id' , (req , res) => {
+   
+    const id = req.params.id
+    models.Person.findByPk(id)
+    
+    .then( person => {
+        person[id]= req.body 
+        res.status(201).json({person: person})
+    })
+    .catch( e => console.log(e))
+  
+})
+
+//localhost:3000/api/person/:id to Delete person at a time
+app.delete('/api/person/:id' , (req , res) => {
+    const id = req.params.id
+    models.Person.findByPk(id)
+    .then( person => {
+        person.splice(id, 1);
+        res.status(201).send()
+    })
+    .catch( e => console.log(e))
+  
+})
+
 app.listen(port, ()=> console.log(`express-api listening on port ${port}`));
