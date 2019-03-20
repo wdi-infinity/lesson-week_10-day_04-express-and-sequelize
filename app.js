@@ -1,9 +1,16 @@
 import express from 'express';
 import models from './models';
+import bodyParser from 'body-parser';
 
 const app = express();
 const port = 3000;
 
+/*** Middleware ***/
+
+app.use(bodyParser.json());
+
+
+/*** Routes ***/
 app.get('/', (req, res) => {
     res.status(200).json({
         message: 'Hello WDI-Infinity!'
@@ -20,6 +27,8 @@ app.get('/', (req, res) => {
 //   { firstName: 'Abdullah', lastName: 'Alfehaid' }
 // ];
 
+
+// Get all people
 app.get('/api/people', (req, res) => {
     models.Person.findAll()
         .then(peopleFromDB => {
@@ -30,6 +39,9 @@ app.get('/api/people', (req, res) => {
         .catch(e => console.log(e));
 });
 
+
+
+//Get person by Record ID
 app.get('/api/person/:id', (req, res) => {
     if (!isNaN(req.params.id)) {
 
@@ -41,16 +53,24 @@ app.get('/api/person/:id', (req, res) => {
                     res.status(404).json({ error: 'Person Not Found' });
                 }
             })
-      
-      // 2==>>> res.status(200).json({person: person});
+
         
     .catch(e=> console.log(e));
         }else{
             res.status(406).json({error: "Invalid ID"});
 
         }
-    // 1==>>> res.status(200).json({user_id: req.params.id});
 });
+
+//Create new person 
+app.post('/api/person', ( req, res)=>{
+    models.Person.create(req.body)
+    .then(personNewFromDB =>{
+        res.status(201).json({ person: personNewFromDB });
+    })
+    .catch(e => console.log(e));
+    // res.status(200).json({result:req.body});
+})
 
 
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
