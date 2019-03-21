@@ -106,7 +106,7 @@ http://localhost:3000/api/person/533
         res.status(200).json({articles: articles })
     }).catch(e => console.log(e));
     });
-
+    //add routes to show all articles
     app.get('/api/article/:id', (req, res) => {
         models .Articles.findPk(req.params.id).then(article => {
         res.status(200).json({article: article});
