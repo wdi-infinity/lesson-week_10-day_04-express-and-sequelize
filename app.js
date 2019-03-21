@@ -63,7 +63,7 @@ app.post('/api/person', (req, res) => {
         .catch(e => console.log(e));
 });
 
-
+// My solution
 // app.delete('/api/person/:id', (req, res) => {
 //     if (!isNaN(req.params.id)) {
 //         models.Person.destroy({
@@ -78,6 +78,8 @@ app.post('/api/person', (req, res) => {
 //     }
 // });
 
+
+//Usman solution
 app.delete('/api/person/:id', (req, res) => {
     models.Person.findByPk(req.params.id)
         .then(person => {
@@ -89,6 +91,9 @@ app.delete('/api/person/:id', (req, res) => {
         .catch(e => console.log(e));
 
 });
+
+
+//My solution 
 app.patch('/api/person/:id', (req, res) => {
     if (!isNaN(req.params.id)) {
         models.Person.update({ first_name: "Rawan9", last_name: "Alahmadi" }, { where: { id: req.params.id } }
@@ -101,6 +106,24 @@ app.patch('/api/person/:id', (req, res) => {
     } else {
         res.status(406).json({ error: 'Invalid ID' });
     }
+});
+
+
+
+//Usman solution 
+app.put('/api/person/:id', (req, res) => {
+    models.Person.findByPk(req.params.id)
+        .then(person => {
+            person.update({
+                first_name: req.body.first_name,
+                last_name: req.body.last_name
+            }).then((person) => {
+                res.status(200).json({ person: person });
+            })
+                .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
+
 });
 
 app.listen(3000, () => console.log(`express-api listening on port ${port}!`))
