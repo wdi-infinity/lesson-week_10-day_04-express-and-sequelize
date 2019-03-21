@@ -56,18 +56,24 @@ app.post('/api/person', (req, res) => {
 });
 //Delete
 app.delete('/api/person/:id', (req, res) => {
-    models.Person.destroy({
-        where: { id: req.params.id }
-    }).then(personDeleteFromDb => {
-        res.status(204).json({ person: personDeleteFromDb });
-    })
-        .catch(e => console.log(e));
-
-    // models.Person.findByPk(req.body)
-    //     .then(personDeleteFromDb => {
-    //         res.status(204).json({ person: personDeleteFromDb.destroy() });
-    //     })
+    // models.Person.destroy({
+    //     where: { id: req.params.id }
+    // }).then(personDeleteFromDb => {
+    //     res.status(204).json({ person: personDeleteFromDb });
+    // })
     //     .catch(e => console.log(e));
+
+    models.Person.findByPk(req.params.id)
+        .then(person => {
+            person.destroy().then(() => {
+                res.status(200).json({
+                    result: `Record ID ${req.params.id} Delete`,
+                    success: true
+                });
+            })
+
+        })
+        .catch(e => console.log(e));
 });
 
 app.put('/api/person/:id', (req, res) => {
