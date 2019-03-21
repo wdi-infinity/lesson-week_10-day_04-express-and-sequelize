@@ -143,6 +143,8 @@ app.get('/api/articles', (req , res) => {
 })
 
 
+
+
 // localhost:3000/api/articles/1
 
 app.get('/api/article/:id', (req, res) => {
@@ -161,8 +163,42 @@ app.get('/api/article/:id', (req, res) => {
  });
 
 
+// http://localhost:3000/api/article/2/articles
+
+// get all articles by person record ID
 
 
 
+
+
+
+
+
+// http://localhost:3000/api/person/1/articles
+// Get All Articles by Person Record ID
+app.get('/api/person/:id/articles', (req, res) => {
+    
+    models.Person.findByPk(req.params.id, {include: [{model : models.Article}] }).then(person =>{
+        res.status(200).json({ person : person });
+    }).catch(e => console.log(e));
+    
+  });
+
+
+
+models.sequelize.sync().then(() => {
+    console.log('sync complete');
+
+
+    // This way to add data witout useing seeds
+// models.Article.create({
+
+//     title: 'test',
+//     content: 'this is a body',
+//     PersonId:2
+
+// });
 
 app.listen(port, () => console.log(`express-api app listening on port ${port}`));
+})
+
