@@ -70,5 +70,20 @@ app.post('/api/person', (req, res) => {
 })
 
 
+// Delete single person by ID
+
+app.delete('/api/person/:id', (req, res) => {
+    if (!isNaN(req.params.id)) {
+        models.Person.destroy({
+            where: { id: req.params.id }
+        })
+            .then(person => {
+                res.status(202).json({ person: req.params.id });
+            })
+            .catch(e => console.log(e));
+    } else {
+        res.status(406).json({ error: 'Invalid ID' });
+    }
+});
 
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
