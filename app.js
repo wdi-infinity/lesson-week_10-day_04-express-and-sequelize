@@ -114,5 +114,13 @@ res.status(200).json({articles: articles});
 }).catch(e => console.log(e))
 })
 
+app.get('/api/article/:id', (req, res) => {
+    models.Article.findByPk(req.params.id)
+    .then(article => {
+    res.status(200).json({article: article});
+
+    }).catch(e => console.log(e))
+})
+
 
 app.listen(port, () => console.log(`express-api and listening on port ${port}!`));
