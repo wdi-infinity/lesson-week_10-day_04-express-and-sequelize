@@ -64,29 +64,60 @@ app.get('/api/person/:id', (req, res) => {
  });
 
 
-// //update 
+//update 
 
-// app.put('/api/person/:id',(req,res)=> {
-// const id =  models.Person.findByPk(req.params.id)
-// const person = req.body.person;
-// models.Person[id]=person;
-//  res.status(201).json({person:person})
+// Update an existing Person
+
+app.put('/api/person/:id', (req, res) => {
+  // Find Person By ID sent to us by User in the URL
+  models.Person.findByPk(req.params.id).then(person => {
+    // Call the Update function on the Person the database sent us back.
+    // Only update the fields I care about.
+    person.update({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name
+    }).then(person => {
+      // The database was able to update the user
+      // And it sent us back an updated Record with the new information
+      // We can now send back this new information to the user
+      res.status(200).json({ person: person });
+    }).catch(e => console.log(e));
+
+  }).catch(e => console.log(e));
+});
+
+
+//Delete
+
+//my solve
+// app.delete('/api/person/:id',(req,res)=> {
+//     models.Person.destroy({
+//         where: {id: req.params.id }
+//     })
+//   .then(person => {
+//     res.status(201).json({message: "sucsess"})
+//   })
+//   .catch(e => console.log(e));
 
 // });
 
 
 
-
+//usman solve
 app.delete('/api/person/:id',(req,res)=> {
+    models.Person.findByPk(req.params.id)
+    .then(person => {
 
-    
-    models.Person.destroy({
-        where: {id: req.params.id }
+       person.destroy().then(()=> {
+           res.status(200).json({
+               result: `Record ID ${req.params.id} Deleted` , 
+               success: true
+           });
+       })
+       .catch(e => console.log(e));
+
     })
-  .then(person => {
-    res.status(201).json({message: "sucsess"})
-  })
-  .catch(e => console.log(e));
+ .catch(e => console.log(e));
 
 });
 
