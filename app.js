@@ -126,5 +126,16 @@ app.delete('/api/person/:id', (req, res) => {
 
 //localhost:3000
 //localhost:3000/api/people
+//http://localhost:3000/api/articales
+app.get('/api/articles', (req, res) => {
+    models.Article.findAll()
+
+        .then(articles => {
+            res.status(200).json({ articles: articles })
+
+        })
+        .catch(e => console.log(e));
+
+})
 
 app.listen(port, () => console.log(`express-api app listninig on port ${port}!`));
