@@ -144,8 +144,28 @@ app.get('/api/article/:id', (req, res) => {
     }).catch(e => console.log(e));
 })
 
+// http://localhost:3000/api/person/1/articles
+// Get All Articles by Person Record ID
+app.get('/api/person/:id/articles', (req, res) => {
+    models.Person.findByPk(req.params.id, {
+        include: [{
+            model: models.Article
+        }]
+    }).then(person => {
+        res.status(200).json({
+            person: person
+        });
+    });
+});
 
 
 
-
-app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
+models.sequelize.sync().then(() => {
+    console.log("sync complete");
+    models.Article.create({
+        title: 'test2',
+        content: 'this is the body',
+        PersonId: 2
+    });
+    app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
+})
