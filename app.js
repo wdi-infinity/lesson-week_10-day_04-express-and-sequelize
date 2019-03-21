@@ -97,5 +97,12 @@ app.get('/api/articles', (req, res) => {
      res.status(200).json({articles: articles});
      }).catch(e => console.log(e));
 })
+
+app.get('/api/article/:id', (req, res) => {
+  //  res.status(200).json({message: 'working'});
+    models.Article.findByPk(req.params.id).then(article => {
+    res.status(200).json({article: article});
+    }).catch(e => console.log(e));
+})
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
