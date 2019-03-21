@@ -88,7 +88,7 @@ app.post('/api/person', (req, res) => {
 //         })
 //         .catch(e => console.log(e));
 // });
-// PATCH single owner
+// PATCH single person
 app.patch('api/person', (req, res) => {
     const id = req.params.id;
     const updates = req.body.updates;
@@ -103,16 +103,21 @@ app.patch('api/person', (req, res) => {
         }).catch(e => console.log(e));
 });
 
-// DELETE single owner
-app.delete('api/person', (req, res) => {
-    const id = req.params.id;
-    db.person.destroy({
-        where: { id: id }
-    })
-        .then(deletedperson => {
-            res.json(deletedperson);
-        }).catch(e => console.log(e));
-});
+// DELETE single person
+app.delete('/api/person/:id', (req, res) => {
+    models.Person.findByPk(req.params.id)
+        .then(person => {
+            person.destroy().then(() => {
+                res.status(201).json({
+                    result: `Record ID ${req.params.id} Deleted`,
+                    success: true
+                });
+            })
+                .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
+
+})
 
 //localhost:3000
 //localhost:3000/api/people
