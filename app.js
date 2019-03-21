@@ -129,7 +129,7 @@ app.delete('/api/person/:id', (req, res) => {
     .catch(e => console.log(e));
 });
 
-
+//http://localhost:3000/api/articles
 app.get('/api/articles',(req,res)=>{
 
 models.Article.findAll().then(articles => {
@@ -139,6 +139,18 @@ models.Article.findAll().then(articles => {
 
 //For test
 //res.status(200).json({msg:'working'});
+
+//http://localhost:3000/api/articles/2
+app.get('/api/article/:id',(req,res)=>{
+//For test
+//res.status(200).json({ msg: 'still working'});
+models.Article.findByPk(req.params.id).then(article =>
+    {
+res.status(200).json({article: article})
+
+    }).catch(e => console.log(e));
+
+})
 
 
 
