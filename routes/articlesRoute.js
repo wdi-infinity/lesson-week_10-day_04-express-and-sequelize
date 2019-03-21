@@ -47,3 +47,30 @@ router.post('/api/articles' , (req, res) => {
     })
     .catch( e => console.log(e))
 })
+
+router.put('/api/person/:id' , (req , res) => {
+   
+    const id = req.params.id
+    models.Article.findByPk(id)
+    .then( article => {
+        article.update({ title: req.body.title , content: req.body.content }) 
+        res.status(201).json({article: article})
+    })
+    .catch( e => console.log(e))
+  
+})
+
+router.delete('/api/person/:id', (req, res) => {
+    const id = req.params.id
+    models.Article.findByPk(id)
+      .then(article => {
+        article.destroy().then(() => {
+          res.status(200).json({
+            result: `Record ID ${id} Deleted`,
+            success: true
+          });
+        })
+        .catch(e => console.log(e));
+      })
+      .catch(e => console.log(e));
+  });
