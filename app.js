@@ -78,5 +78,20 @@ app.post('/api/person', (req, res) => {
 
 
 
+// HW:
+// Delete
+app.delete('/person/:id', (req, res) => {
+    const id = req.params.id;
+    res.status(204).send();
+});
+
+// update 
+app.put('/person/:id', (req, res) => {
+    const id = req.params.id
+    person[id] = person;
+    res.status(200).json({ person: person });
+});
+
+
 app.listen(port, () => console.log(`express-api listening on port ${port}`))
 
