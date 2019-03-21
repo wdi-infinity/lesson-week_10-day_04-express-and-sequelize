@@ -105,8 +105,8 @@ app.put('/api/person/:id', (req, res) => {
 
 //usman solve
 app.delete('/api/person/:id',(req,res)=> {
-    models.Person.findByPk(req.params.id)
-    .then(person => {
+      models.Person.findByPk(req.params.id)
+      .then(person => {
 
        person.destroy().then(()=> {
            res.status(200).json({
@@ -115,22 +115,30 @@ app.delete('/api/person/:id',(req,res)=> {
            });
        })
        .catch(e => console.log(e));
-
     })
- .catch(e => console.log(e));
-
+        .catch(e => console.log(e));
 });
 
 
 // http://localhost:3000/api/articles
-
+    ///get all the articles///
 app.get('/api/articles', (req, res)=>{
   models.Article.findAll()
   .then(articles => {
    res.status(200).json({articles:articles})
   })
 .catch(e=> console.log(e));
+})
 
+
+
+  /// get Article by record ID ////
+app.get('/api/article/:id',(req,res)=>{
+ models.Article.findByPk(req.params.id)
+ .then(article => {
+   res.status(200).json({article:article})
+ })
+  .catch(e=> console.log(e));
 })
 
 app.listen(PORT, () => {
