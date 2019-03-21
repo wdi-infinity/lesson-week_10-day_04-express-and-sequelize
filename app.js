@@ -25,8 +25,7 @@ app.get('/api/people', (req,res) => {
     .then(people => {
         res.status(200).json({
             //the first people is just the key, so it's changable but not the second one.
-            people: people
-        });
+            people: people});
     })
     .catch(e => console.log(e));
   
@@ -78,8 +77,12 @@ app.put('/api/person/:id' , (req , res) => {
 app.delete('/api/person/:id' , (req , res) => {
     models.Person.findByPk(req.params.id)
     .then( person => {
-        person.destroy()
-        res.status(200).send()
+        person.destroy().then(() => {
+            res.status(200).json({
+                result: `Record ID ${req.params.id} is deleted`
+            })
+        })
+        
     })
     .catch( e => console.log(e))
  
