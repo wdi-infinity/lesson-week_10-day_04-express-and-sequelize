@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   { tableName: 'articles'}
   );
   Article.associate = function(models) {
-    // associations can be defined here
+    Article.belongsTo(models.Person);
   };
   return Article;
 };
