@@ -74,12 +74,18 @@ app.put('/api/person/:id', (req, res) => {
 
 //Delete a person
 app.delete('/api/person/:id', (req, res) => {
-    models.Person.splice(req.params.id)
+    models.Person.findByPk(req.params.id)
         .then(person => {
-            res.status(200).json({ person: person });
+            person.destroy()
+                .then(() => {
+                    res.status(200).json({
+                        result: `Record ID ${req.params.id} Deleted`,
+                        success: true
+                    })
+                })
+                .catch(e => console.log(e))
         })
         .catch(e => console.log(e))
-
 })
 
 
