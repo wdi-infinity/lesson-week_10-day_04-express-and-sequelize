@@ -151,6 +151,14 @@ app.get('/api/articles', (req, res) => {
 
 })
 
+// list single Article by record ID
+// http://localhost:3000/api/article/1
+app.get('/api/article/:id', (req, res) => {
+    models.Article.findByPk(req.params.id)
+        .then(article => {
+            res.status(200).json({ article: article });
+        }).catch(e => console.log(e));
+})
 
 
 
