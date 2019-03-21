@@ -56,8 +56,9 @@ else{
 });
 
 // Update
-app.put('/api/person/:id',(req,res,next)=>{
+app.put('/api/person/:id',(req,res)=>{
 //update
+//.params the params in url
   models.Person.update(
       {first_name:req.body.first_name,
       last_name:req.body.last_name},
@@ -65,6 +66,7 @@ app.put('/api/person/:id',(req,res,next)=>{
 })
 
   .then(()=>{
+      // the database was able to update the person
     res.status(200).json({message:"Updated successfully"});
   }).catch(e=> console.log(e))
 
@@ -74,12 +76,12 @@ app.delete('/api/person/:id',(req,res)=>{
     models.Person.destroy({
         where: {
             id:req.params.id
-        }//dlete the person from database for the matching person id
+        }//delete the person from database for the matching person id
     })
     .then(()=>{
         res.status(200).json({message:"Deleted successfully"});
       })
-    .catch(e=> console.log(e))
+    .catch(e=> console.log(e));
 });
 
 const port=3000;
@@ -87,3 +89,41 @@ app.listen(port,() => console.log(`express-api app listening on port ${port}`));
 
 
 //connect sqluelize with express
+//usman solve --> Delete existing Person by Record ID
+// app.delete('/api/person/:id',(req,res)=> {
+//     models.Person.findByPk(req.params.id)
+//     .then(person => {
+
+//        person.destroy().then(()=> {
+//            res.status(200).json({
+//                result: `Record ID ${req.params.id} Deleted` , 
+//                success: true
+//            });
+//        })
+//        .catch(e => console.log(e));
+
+//     })
+//  .catch(e => console.log(e));
+
+// });
+
+// update 
+// Update an existing Person
+// http://localhost:3000/api/person/533
+// app.put('/api/person/:id', (req, res) => {
+  // Find Person By ID sent to us by User in the URL
+//   models.Person.findByPk(req.params.id).then(person => {
+    // Call the Update function on the Person the database sent us back.
+    // Only update the fields I care about.
+    // person.update({
+    //   first_name: req.body.first_name,
+    //   last_name: req.body.last_name
+    // }).then(person => {
+      // The database was able to update the user
+      // And it sent us back an updated Record with the new information
+      // We can now send back this new information to the user
+//       res.status(200).json({ person: person });
+//     }).catch(e => console.log(e));
+
+//   }).catch(e => console.log(e));
+// });
