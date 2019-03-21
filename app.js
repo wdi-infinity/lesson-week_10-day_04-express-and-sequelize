@@ -79,6 +79,41 @@ app.post('/api/person', (req, res) => {
 
 
 });
+//Delete Person
+
+// app.delete('/api/person/:id', (req, res) => {
+//     models.Person.destroy(req.params.id)
+//         .then(deletedperson => {
+//             res.status(200).json({ person: deletedperson });
+//         })
+//         .catch(e => console.log(e));
+// });
+// PATCH single owner
+app.patch('api/person', (req, res) => {
+    const id = req.params.id;
+    const updates = req.body.updates;
+    db.person.find({
+        where: { id: id }
+    })
+        .then(person => {
+            return person.updateAttributes(updates)
+        })
+        .then(updatedPerson => {
+            res.json(updatedPerson);
+        }).catch(e => console.log(e));
+});
+
+// DELETE single owner
+app.delete('api/person', (req, res) => {
+    const id = req.params.id;
+    db.person.destroy({
+        where: { id: id }
+    })
+        .then(deletedperson => {
+            res.json(deletedperson);
+        }).catch(e => console.log(e));
+});
+
 //localhost:3000
 //localhost:3000/api/people
 
