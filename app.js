@@ -101,6 +101,7 @@ app.delete('/api/person/:id', (req, res) => {
 // update an existing person
 app.put('/api/person/:id', (req, res) => {
     // --> we need to define and find the person we want to update
+    // model find me a person with pk. if you find it return me the func -->  .then(person => {
     models.Person.findByPk(req.params.id)
         // person object -> holds a refrence of a person from sequlize   
         .then(person => {
@@ -109,7 +110,9 @@ app.put('/api/person/:id', (req, res) => {
             person.update({
                 first_name: req.body.first_name,
                 last_name: req.body.last_name
+                // when you're done .then the 1st function which is updating a persong
             }).then(person => {
+                // Excute the second one which is savong the perosin to the db
                 res.status(200).json({ person: person });
             })
         }).catch(e => console.log(e))
