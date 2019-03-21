@@ -1,12 +1,14 @@
 import express from 'express';
 import models from './models';
 import bodyParser from 'body-parser';
+import peopleRouter from './routes/peopleRoutes';
 
 const app = express();
 const port = 3000;
 /* middleware */
 
 app.use(bodyParser.json());
+app.use(peopleRouter);
 
 /* Routes*/
 
@@ -26,34 +28,8 @@ app.get('/', (req, res) => {
 //     { firstName: 'Rawan5', lastName: 'Alahmmadi' }
 // ]
 
-//Get all people
-app.get('/api/people', (req, res) => {
-    models.Person.findAll()
-        .then(people => {
-            res.status(200).json({
-                people: people
-            });
-        })
-        .catch(e => console.log(e));
 
-});
-app.get('/api/person/:id', (req, res) => {
-    if (!isNaN(req.params.id)) {
-        models.Person.findByPk(req.params.id)
-            .then(person => {
-                if (person !== null) {
-                    res.status(200).json({ person: person });
-                }
-                else {
-                    res.status(404).json({ error: 'Person Not Found' });
-                }
-            })
-            .catch(e => console.log(e));
-    } else {
-        res.status(406).json({ error: 'Invalid ID' });
-    }
 
-});
 
 app.post('/api/person', (req, res) => {
     models.Person.create(req.body)
@@ -80,17 +56,7 @@ app.post('/api/person', (req, res) => {
 
 
 //Usman solution
-app.delete('/api/person/:id', (req, res) => {
-    models.Person.findByPk(req.params.id)
-        .then(person => {
-            person.destroy().then(() => {
-                res.status(201).json({ result: `Record ID ${req.params.id} deleted` });
-            })
-                .catch(e => console.log(e));
-        })
-        .catch(e => console.log(e));
 
-});
 
 
 //My solution 
@@ -111,20 +77,7 @@ app.patch('/api/person/:id', (req, res) => {
 
 
 //Usman solution 
-app.put('/api/person/:id', (req, res) => {
-    models.Person.findByPk(req.params.id)
-        .then(person => {
-            person.update({
-                first_name: req.body.first_name,
-                last_name: req.body.last_name
-            }).then((person) => {
-                res.status(200).json({ person: person });
-            })
-                .catch(e => console.log(e));
-        })
-        .catch(e => console.log(e));
 
-});
 
 
 app.get('/api/articles', (req, res) => {
@@ -155,23 +108,7 @@ app.get('/api/article/:id', (req, res) => {
 
 // Get All Articles by Person Record ID 
 
-app.get('/api/person/:id/articles', (req, res) => {
-    if (!isNaN(req.params.id)) {
-        models.Person.findByPk(req.params.id, { include: [{ model: models.Article }] })
-            .then(person => {
-                if (person !== null) {
 
-                    res.status(200).json({ person: person });
-                }
-                else {
-                    res.status(404).json({ error: 'Person Not Found' });
-                }
-            })
-            .catch(e => console.log(e));
-    } else {
-        res.status(406).json({ error: 'Invalid ID' });
-    }
-});
 
 
 models.sequelize.sync().then(() => {
