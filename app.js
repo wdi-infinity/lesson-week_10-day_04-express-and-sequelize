@@ -51,6 +51,25 @@ app.post('/api/person', (req, res) => {
     .catch(e => console.log(e));
 });
 
+// update an existing person
+app.put('/api/person/:id',(req, res) => {
+    // find person by ID sent to us by user in the URL 
+    models.Person.findByPk(req.params.id).then(person => {
+        // Call the update on the person sent back by the db.
+        // Only update the feilds I specified.
+        person.update({
+            first_name: req.body.first_name,
+            last_name: req.body.last_name
+        }).then(person => {
+            // the db was able to update the user
+            // 
+            res.status(200).json({ person: person });
+        })
+
+    }).catch(e => console.log(e));
+})
+
+// delete an existing person by record ID
 app.delete('/api/person/:id', (req, res) => {
     models.Person.findByPk(req.params.id)
     .then(person =>{
