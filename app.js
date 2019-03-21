@@ -44,7 +44,6 @@ app.get('/api/person/:id', (req, res) => {
     // To test if id is working 
     // res.status(200).json({ user_id: req.params.id })
     // We need only Numbers as an IDs ! so we added a condition 
-
     if (!isNaN(req.params.id)) {
         models.Person.findByPk(req.params.id)
             .then(person => {
@@ -79,11 +78,24 @@ app.post('/api/person', (req, res) => {
 
 
 // HW:
+
 // Delete
-app.delete('/person/:id', (req, res) => {
-    const id = req.params.id;
-    res.status(204).send();
+app.delete('/api/person/:id', (req, res) => {
+    // I need to find a person by ID
+    models.Person.findByPk(req.params.id)
+        // person object -> holds a refrence of a person from sequlize   
+        .then(person => {
+            person.destroy().then(() => {
+                res.status(200).json({
+                    result: `Record ID ${req.params.id} Deleted`,
+                    success: true
+                });
+            })
+                .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
 });
+
 
 // update 
 app.put('/person/:id', (req, res) => {
