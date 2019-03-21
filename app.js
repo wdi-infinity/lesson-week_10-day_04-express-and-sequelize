@@ -117,4 +117,38 @@ app.get('/api/people', (req, res) => {
     });
 })
 
+// get all articles
+app.get('/api/articles', (req, res) => {
+
+    models.Article.findAll()
+        .then(articleFromDB => {
+            res.status(200).json({
+                articles: articleFromDB
+            });
+        })
+        .catch(e => console.log(e));
+});
+
+// get article by id
+app.get('/api/articles/:id', (req, res) => {
+
+    if (!isNaN(req.params.id)) {
+        models.Article.findByPk(req.params.id)
+            .then(articleFromDB => {
+
+                if (articleFromDB !== null) {
+                    res.status(200).json({ article: articleFromDB });
+                } else {
+                    res.status(404).json({ message: "article NOT found" });
+                }
+
+            })
+            .catch(e => console.log(e));
+    } else {
+        res.status(406).json({ error: "Invalid ID" });
+    }
+
+});
+
+
 app.listen(port, () => console.log(`express-api listening on port ${port}!`))
