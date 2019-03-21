@@ -103,6 +103,7 @@ app.delete('/api/person/:id', (req, res) => {
 
 
 // http://localhost:3000/api/articles
+//get all articles
 app.get('/api/articles', (req, res) => {
     models.Article.findAll()
         .then(articles => {
@@ -111,6 +112,7 @@ app.get('/api/articles', (req, res) => {
         .catch(e => console.log(e))
 })
 
+//get one article by id
 app.get('/api/articles/:id', (req, res) => {
     if (!isNaN(req.params.id)) {
         models.Article.findByPk(req.params.id)
@@ -131,4 +133,25 @@ app.get('/api/articles/:id', (req, res) => {
     }
 })
 
-app.listen(port, () => console.log(`express-api app listeing on port ${port}!`))
+// http://localhost:3000/api/person/1/articles
+//get all articles bu person id
+app.get('/api/person/:id/articles', (req, res) => {
+    models.Person.findByPk(req.params.id, { include: [{ model: models.Article }] })
+        .then(person => {
+            res.status(200).json({ person: person })
+        })
+        .catch(e => console.log(e))
+})
+
+models.sequelize.sync().then(() => {
+    console.log('sync complete');
+
+    // models.Article.create({
+    //     title: 'test2',
+    //     content: 'test content2',
+    //     PersonId: 1
+    // });
+
+
+    app.listen(port, () => console.log(`express-api app listeing on port ${port}!`))
+})
