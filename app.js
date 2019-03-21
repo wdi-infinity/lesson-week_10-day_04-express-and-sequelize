@@ -72,19 +72,39 @@ app.post('/api/person', (req, res) => {
 
 // Delete single person by ID
 
+// app.delete('/api/person/:id', (req, res) => {
+//     if (!isNaN(req.params.id)) {
+//         models.Person.destroy({
+//             where: { id: req.params.id }
+//         })
+//             .then(person => {
+//                 res.status(202).json({ person: req.params.id });
+//             })
+//             .catch(e => console.log(e));
+//     } else {
+//         res.status(406).json({ error: 'Invalid ID' });
+//     }
+// });
+
+
+// ////////////////////
+// another way to delete a person 
 app.delete('/api/person/:id', (req, res) => {
-    if (!isNaN(req.params.id)) {
-        models.Person.destroy({
-            where: { id: req.params.id }
-        })
-            .then(person => {
-                res.status(202).json({ person: req.params.id });
+    models.Person.findByPk(req.params.id)
+        .then(person => {
+            person.destroy().then(() => {
+                res.status(201).json({
+                    result: `Record ID ${req.params.id} Deleted`,
+                    success: true
+                });
             })
-            .catch(e => console.log(e));
-    } else {
-        res.status(406).json({ error: 'Invalid ID' });
-    }
-});
+                .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
+
+})
+
+
 
 // update current person by ID 
 
