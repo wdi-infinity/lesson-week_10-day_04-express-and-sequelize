@@ -64,14 +64,23 @@ app.post('/api/person', (req, res) => {
 })
 //to update the person data
 app.put('/api/person/:id' , (req , res) => {
-
+    // find Person by ID sent to us by user in the URL
     models.Person.findByPk(req.params.id)
     .then( person => {
-        person[req.params.id]= req.body 
-        res.status(200).json({person: person})
+        //call the update function on the person the database sent us back
+        //Only update the fields I care about.
+        person.update({ 
+                first_name: req.body.first_name,
+                last_name: req.body.last_name
+        })
+        .then(person => {
+            //THe database was able to update the user
+            // And it sent us back an updated Record with the new information
+            // We can now send back this new information to the user
+            res.status(200).json({person: person});
+        }).catch(e => console.log(e));
     })
-    .catch( e => console.log(e))
-  
+    .catch( e => console.log(e));
 })
 //to delete a person data.
 app.delete('/api/person/:id' , (req , res) => {
