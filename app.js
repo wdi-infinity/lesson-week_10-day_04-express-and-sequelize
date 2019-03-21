@@ -99,4 +99,20 @@ app.get("/api/articles", (req, res) => {
     .catch(e => console.log(e));
 });
 
+app.get("/api/article/:id", (req, res) => {
+  if (isNaN(req.params.id) === false) {
+    ig
+    models.Article.findByPk(req.params.id)
+      .then(article => {
+        if(article === null){
+          res.status(200).json({ article: article });
+        }
+        else{
+          res.status(404).json({ msg: "article is not found" });
+        }
+      })
+      .catch(e => console.log(e));
+  }.then()
+});
+
 app.listen(port, () => console.log(`working on port ${port}`));
