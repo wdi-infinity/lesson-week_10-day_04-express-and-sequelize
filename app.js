@@ -71,14 +71,37 @@ app.post('/api/person', ( req, res)=>{
     .catch(e => console.log(e));
 })
 
-//update person
-app.post('/api/person/:id', (req, res) => {
-    models.Person.update(req.body)
-        .then(personUpdateFromDB => {
-            res.status(201).json({ person: personUpdateFromDB });
+
+
+
+//Delete exiting  Person By Record ID 
+app.delete('/api/person/:id', (req, res)=> {
+    models.Person.findByPk(req.params.id)
+        .then(person => {
+            person.destroy().then(()=>{
+                res.status(200).json({
+                    result: `Record ID ${req.params.id} Deleted`,
+                    success: true
+                });
+            })
+            .catch(e => console.log(e));
         })
         .catch(e => console.log(e));
-})
+});
+
+
+
+
+
+
+//update person
+// app.post('/api/person/:id', (req, res) => {
+//     models.Person.update(req.body)
+//         .then(personUpdateFromDB => {
+//             res.status(201).json({ person: personUpdateFromDB });
+//         })
+//         .catch(e => console.log(e));
+// })
 
 
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
