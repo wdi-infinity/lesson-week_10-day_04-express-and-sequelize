@@ -137,5 +137,38 @@ app.get('/api/articles', (req, res) => {
         .catch(e => console.log(e));
 
 })
+app.get('/api/articles/:id', (req, res) => {
+    models.Article.findByPk(req.params.id).then(article => {
+        res.status(200).json({ article: article });
 
-app.listen(port, () => console.log(`express-api app listninig on port ${port}!`));
+    }).catch(e => console.log(e));
+
+})
+//{ force: true }
+//http://localhost:300/api/person/1/articales  this is example of relations link 
+//Get all Articles by person id 
+app.get('/api/person/:id/articles', (req, res) => {
+    models.Person.findByPk(req.params.id, { include: [{ model: models.Article }] })
+        .then(person => {
+            res.status(200).json({ article: article });
+
+        }).catch(e => console.log(e));
+
+
+
+});
+
+
+
+models.sequelize.sync().then(() => {
+
+    console.log('sync complete');
+
+    // models.Article.create({
+    //     title: 'test',
+    //     content: 'this is a body',
+    //     personId: 1
+    // });this to add seed data without seed file
+    app.listen(port, () => console.log(`express-api app listninig on port ${port}!`));
+})
+
