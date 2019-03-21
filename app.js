@@ -113,7 +113,7 @@ app.delete('/api/person/:id', (req, res)=> {
 });
 
 // GET of all API Articales
-
+//http://localhost:3000/api/articles
 app.get('/api/articles', (req, res) => {
     models.Article.findAll().then(articles => {
         res.status(200).json({ articles: articles });
@@ -121,7 +121,7 @@ app.get('/api/articles', (req, res) => {
 })
 
 // GET of one  API Articales by ID
-
+//http://localhost:3000/api/articles/1
 app.get('/api/articles/:id', (req, res) => {
     models.Article.findByPk(req.params.id).then(articles => {
         res.status(200).json({ articles: articles });
@@ -129,9 +129,28 @@ app.get('/api/articles/:id', (req, res) => {
 })
 
 
+//http://localhost:3000/api/person/1/articles
+//GET all Articles by Person Record ID
+app.get('/api/person/:id/articles', (req, res) => {
+    models.Person.findByPk(req.params.id, { include: [{ model: models.Article }] })
+        .then(person => {
+            res.status(200).json({ person: person })
+        }).catch(e => console.log(e));
+    });
 
 
+        
 
+// this command drop all databace >>>>> models.sequelize.sync({ force: true }).then(() => {
+models.sequelize.sync().then(() => {
+    console.log('SYNC COMPLETE');
 
+    models.Article.create({
+        title:'test3',
+        content:'this is a body',
+        PersonId:1
+    });
 
-app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
+    app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
+})
+
