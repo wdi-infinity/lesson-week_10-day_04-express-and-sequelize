@@ -51,6 +51,20 @@ app.post('/api/person', (req, res) => {
     .catch(e => console.log(e));
 });
 
+app.delete('/api/person/:id', (req, res) => {
+    models.Person.findByPk(req.params.id)
+    .then(person =>{
+        person.destroy().then(() => {
+            res.status(200).json({
+                result: `Record ID ${req.params.id} Deleted`,
+                success: true 
+            });
+        })
+        .catch(e => console.log(e));
+    })
+    .catch(e => console.log(e));
+});
+
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`))
 
 
