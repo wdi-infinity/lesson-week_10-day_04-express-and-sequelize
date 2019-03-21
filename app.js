@@ -63,7 +63,25 @@ app.post('/api/person', (req, res) => {
     })
     .catch(e => console.log(e));
 })
+//to update the person data
+app.put('/api/person/:id' , (req , res) => {
 
-
-
+    models.Person.findByPk(req.params.id)
+    .then( person => {
+        person[req.params.id]= req.body 
+        res.status(200).json({person: person})
+    })
+    .catch( e => console.log(e))
+  
+})
+//to delete a person data.
+app.delete('/api/person/:id' , (req , res) => {
+    models.Person.findByPk(req.params.id)
+    .then( person => {
+        person.destroy()
+        res.status(200).send()
+    })
+    .catch( e => console.log(e))
+ 
+ })
 app.listen(port, ()=> console.log(`working on port ${port}`));
