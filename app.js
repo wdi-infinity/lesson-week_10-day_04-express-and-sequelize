@@ -119,7 +119,7 @@ app.delete('/api/person/:id', (req, res) => {
 
   
     
-    //localhost:3000/api/articales display all list
+    //localhost:3000/api/articles display all list
     app.get('/api/articles' , (req , res ) => {
         //Find all people
         models.Article.findAll()
@@ -159,4 +159,31 @@ app.delete('/api/person/:id', (req, res) => {
         })
         .catch( e => console.log(e))
     })
-app.listen(port, ()=> console.log(`express-api listening on port ${port}`));
+
+    //localhost:3000/api/person/:id/articles display all articles which belongs to this person
+    app.get('/api/person/:id/articles' , (req, res) =>{
+       const  id = req.params.id
+       models.Person.findByPk(id , 
+        {include: 
+            [{model: models.Article}]
+        }
+        )
+       .then( person =>{
+        res.status(200).json({person: person})
+       })
+       .catch( e => console.log(e))
+    
+
+    })
+
+    models.sequelize.sync().then(() => {
+        console.log("sync completed");
+
+        models.Article.create({
+            title: 'test',
+            content: 'Person 33',
+            PersonId: 3
+
+        })
+        app.listen(port, ()=> console.log(`express-api listening on port ${port}`));
+    })
