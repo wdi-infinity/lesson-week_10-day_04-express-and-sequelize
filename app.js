@@ -62,21 +62,24 @@ app.get('/api/people', (req, res) => {
             });
         })
         .catch(e => console.log(e));
-
-
-
-
-
-
 });
 
-
+//update an existing person
+http://localhost:3000/api/person/533
 app.put('/api/person/:id', (req, res) => {
-    const id = req.body.id;
-    Person.splice(id, 1);
-    people[id] = req.body.Person;
-    const Person = people[id];
-    res.status(201).json({ person: Person });
+    //find person by ID sent to us by User in the URL
+    models.Person.findByPk(req.params.id).then(person => {
+        // call the update function on the Person the database sent us back .
+        // only update the fields I care about 
+        person.update({
+            first_name: req.body.first_name,
+            last_name: req.body.last.last_name
+        }).then(person => {
+            //the database was able to udpate the user
+            //and it sent us back an udpate 
+            res.status(200).json({ person: person });
+        }).catch(e => console.log(e));
+    }).catch(e => console.log(e));
 });
 
 // Delete existing Person by Record ID
