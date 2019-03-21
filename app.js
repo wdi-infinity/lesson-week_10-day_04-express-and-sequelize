@@ -63,11 +63,20 @@ app.post('/api/person', (req, res) =>{
 
 // Update an existing Person
 app.put('/api/person/:id', (req, res) => {
-   models.Person.update(req.params.id)
-   .then(person =>{
-       res.status(201).json({
-           person: person
-       });
+    //Find person bu ID sent to us by user in URL
+   models.Person.findByPk(req.params.id)
+   .then(person => {
+       // Call the update function on the person the database sent us back
+       // Only update the field I care about
+       person.update({
+           first_name: req.body.first_name,
+           last_name: req.body.last_name
+    }).then(person => {
+
+    // the database was able to update the user
+    // And is sent us back an update record with the new information
+        res.status(200).json({person: person});
+    }).catch(e => console.log(e))
     })
        .catch(e => console.log(e))
    });
