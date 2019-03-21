@@ -83,15 +83,54 @@ app.delete('/api/person/:id',(req,res)=>{
       })
     .catch(e=> console.log(e));
 });
+
+// add route to show all article
 app.get('/api/articles',(req,res)=>{
   models.Article.findAll().then(articles=>{
     res.status(200).json({articlesKey:articles})
   }).catch(e=>console.log(e));
-
 });
 
-const port=3000;
-app.listen(port,() => console.log(`express-api app listening on port ${port}`));
+// get one article by id 
+// add route to show article details
+app.get('/api/articles/:id',(req,res)=>{
+  if(!isNaN(req.params.id)){
+  models.Article.findByPk(req.params.id).then(article=>{
+      res.status(200).json({article:article})
+  }).catch(e=> console.log(e));
+}
+  else{
+    res.status(406).json({msg:'invalid id'})
+  }
+});
+
+app.get('/api/person/:id/articles',(req,res)=>{
+    models.Person.findByPk(req.params.id,{include:[{model:models.Article}]}).then(person=>{
+        res.status(200).json({person:person})
+    }).catch(e=>console.log(e));
+    ///////////
+ 
+
+//   include: [{ model: db.Comment, as: "comments"}]
+// })
+})
+
+// if someone run my app I want seqluize run these sync 
+// database synchronise
+models.sequelize.sync().then(()=>{
+  console.log('sync complete');
+
+//   models.Article.create({
+//       title:'test',
+//       content:'this is a test',
+//       PersonId:1
+//   })
+
+    // evrey time the user run server will be excute 
+  const port=3000;
+  app.listen(port,() => console.log(`express-api app listening on port ${port}`));
+})
+
 
 
 //connect sqluelize with express

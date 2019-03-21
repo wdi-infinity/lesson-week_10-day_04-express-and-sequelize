@@ -5,8 +5,13 @@ module.exports = (sequelize, DataTypes) => {
     last_name: DataTypes.STRING
   }, {tableName:"people"});
   Person.associate = function(models) {
+    Person.hasMany(models.Article,{
+      onDelete: 'CASCADE'
+    })
     // associations can be defined here
   };
   
   return Person;
 };
+//////////////////
+// sequelize gnerate sql for us
