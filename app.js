@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 
 
 const app = express();
+// localhost:3000
 const port = 3000;
 
 // Midle ware
@@ -62,7 +63,67 @@ app.post('/api/person', (req,res) => {
 });
 
 
-// localhost:3000
+
+
+
+// update the person 
+app.put('/api/person/:id', (req,res) => {
+    models.Person.update({
+        first_name: req.body,
+        last_name: req.body
+    })
+},
+{
+  where: {
+    id: req.params.id
+  }
+}).then( (result) => res.json(result) )
+
+
+// delete the person 
+app.delete('/api/person/:id', (req, res) => {
+    models.Person.destroy({
+        where: { person: req.params.id}
+    })
+    .then(handleEntityNotFound(res))
+    .then(() => {
+      res.status(204).end();
+    })
+    .catch(handleError(res));
+}
+)
+.then(person => {
+        res.status(200).json({ person: person });
+  })
+    .catch(e => console.log(e));
+
+
+// app.delete('/api/person/:id', (req, res) => {
+//     const id = parseInt(req.params.id, 10);
+  
+    
+//          models.Person.update(index, 1);
+//          return res.status(200).send({
+//            success: 'true',
+//            message: 'posts deleted successfuly',
+//          });
+//       }
+//     });
+  
+  
+//       return res.status(404).send({
+//         success: 'false',
+//         message: 'todo not found',
+//       });
+  
+   
+//   });
+
+
+  
+
+
+
 
 
 
