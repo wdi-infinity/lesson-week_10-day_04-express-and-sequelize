@@ -125,6 +125,20 @@ app.delete('/api/person/:id', (req, res) => {
 
 
   
+app.get('/api/articles', (req , res) => {
+    res.status(200).json({
+        message: 'Hello from articles'
+    })
+})
+
+
+app.get('/api/articles', (req , res) => {
+    models.Article.findAll().then(articles => {
+        res.status(200).json({ articles : articles });
+    }).catch(e => console.log(e));
+       
+    
+})
 
 
 
