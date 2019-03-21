@@ -64,8 +64,23 @@ app.post('/api/person', (req, res) => {
 })
 
 //Update a person
-
+app.put('/api/person/:id', (req, res) => {
+    models.Person.findById(req.params.id)
+        .then(person => {
+            res.status(200).json({ person: person });
+        })
+        .catch(e => console.log(e))
+});
 
 //Delete a person
+app.delete('/api/person/:id', (req, res) => {
+    models.Person.splice(req.params.id)
+        .then(person => {
+            res.status(200).json({ person: person });
+        })
+        .catch(e => console.log(e))
+
+})
+
 
 app.listen(port, () => console.log(`express-api app listeing on port ${port}!`))
