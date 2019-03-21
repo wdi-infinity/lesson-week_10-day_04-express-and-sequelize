@@ -50,7 +50,12 @@ app.get('/api/person/:id', (req, res) => {
     .catch(e => console.log(e))
     
   });
-
+  app.delete('/api/person/:id', (req, res) => {
+    const id = req.body.id;
+    Person.splice(id, 1);
+  
+    res.status(204).send();
+  });
   
 // localhost: 3000/api/people get all people
 app.get('/api/people', (req, res) => {
@@ -62,5 +67,15 @@ app.get('/api/people', (req, res) => {
   })
   .catch(e => console.log(e)); 
 });
+
+
+app.put('/api/person/:id', (req, res) => {
+  const id = req.body.id;
+  Person.splice(id, 1);
+  people[id] = req.body.Person;
+  const Person = people[id];
+  res.status(201).json({person: Person});
+});
+
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
