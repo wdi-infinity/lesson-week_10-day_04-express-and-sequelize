@@ -78,4 +78,19 @@ app.delete('/api/person/:id', (req, res) => {
     }
 });
 
+
+app.patch('/api/person/:id', (req, res) => {
+    if (!isNaN(req.params.id)) {
+        models.Person.update({ first_name: "Rawan9", last_name: "Alahmadi" }, { where: { id: req.params.id } }
+        )
+            .then(person => {
+
+                res.status(201).json({ person: person });
+            })
+            .catch(e => console.log(e));
+    } else {
+        res.status(406).json({ error: 'Invalid ID' });
+    }
+});
+
 app.listen(3000, () => console.log(`express-api listening on port ${port}!`))
