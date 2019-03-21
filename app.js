@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
     });
 });
 
+
 // new routre
 // app.get('/api/people', (req, res) => {
 //     res.status(200).json({
@@ -121,6 +122,15 @@ app.put('/api/person/:id', (req, res) => {
         .catch(e => console.log(e));
 });
 
+// //  localhost:3000/api/articles 
+//  Creating a new route 
+app.get('/api/articles', (req, res) => {
+    // res.status(200).json({ message: 'WORKING! ' });
+    models.Article.findAll().then(articles => {
+        // bring all aricles 
+        res.status(200).json({ articles: articles });
+    }).catch(e => console.log(e));
+})
 
 app.listen(port, () => console.log(`express-api listening on port ${port}`))
 
