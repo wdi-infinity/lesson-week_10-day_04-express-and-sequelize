@@ -54,6 +54,32 @@ app.post('/api/person', (req, res) => {
         .catch(e => console.log(e));
 
 });
+//Delete
+app.delete('/api/person/:id', (req, res) => {
+    models.Person.destroy({
+        where: { id: req.params.id }
+    }).then(personDeleteFromDb => {
+        res.status(204).json({ person: personDeleteFromDb });
+    })
+        .catch(e => console.log(e));
+
+    // models.Person.findByPk(req.body)
+    //     .then(personDeleteFromDb => {
+    //         res.status(204).json({ person: personDeleteFromDb.destroy() });
+    //     })
+    //     .catch(e => console.log(e));
+});
+
+app.put('/api/person/:id', (req, res) => {
+    models.Person.findByPk(req.body)
+        .then(personUpdateFromDb => {
+            res.status(200).json({ person: personUpdateFromDb });
+        })
+        .catch(e => console.log(e));
+
+});
+
+
 
 // localhost:3000/people.html 
 // localhost:3000/api/people
