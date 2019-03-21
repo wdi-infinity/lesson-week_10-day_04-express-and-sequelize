@@ -52,8 +52,7 @@ app.get('/api/person/:id', (req, res) => {
   });
   // delete existing person by record id
   app.delete('/api/person/:id', (req, res) => {
-    models.Person.findByPk(req.params.id)
-    .then(person => {
+    models.Person.findByPk(req.params.id).then(person => {
       person.destroy().then(() => {
         res.status(200).json({
           result: `Record ID ${req.params.id} Deleted`,
@@ -66,8 +65,7 @@ app.get('/api/person/:id', (req, res) => {
   
 // localhost: 3000/api/people get all people
 app.get('/api/people', (req, res) => {
-  models.Person.findAll()
-  .then(people => {
+  models.Person.findAll().then(people => {
     res.status(200).json({
       people: people,
     });
@@ -92,6 +90,12 @@ app.put('/api/person/:id', (req, res) => {
       }).catch(e => console.log(e)); 
     }).catch(e => console.log(e)); 
 });
-
+// localhost: 3000/api/articles get all articles
+app.get('/api/articles', (req, res) => {
+  // res.status(200).json({message: 'working'});
+     models.Article.findAll().then(articles => {
+     res.status(200).json({articles: articles});
+     }).catch(e => console.log(e));
+})
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
