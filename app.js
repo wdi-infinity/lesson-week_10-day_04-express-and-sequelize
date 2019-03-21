@@ -10,6 +10,7 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
+
 /** routes **/
 
 //Root Path
@@ -60,6 +61,35 @@ app.post('/api/person', (req, res) =>{
     
 });
 
+// Update an existing Person
+app.put('/api/person/:id', (req, res) => {
+   models.Person.update(req.params.id)
+   .then(person =>{
+       res.status(201).json({
+           person: person
+       });
+    })
+       .catch(e => console.log(e))
+   });
+
+// app.update('/api/person/:id', (req, res) => {
+    
+//     models.Person.update(
+//         {person: req.body.id},
+//         { where: {id: person.id}})
+//         .then(person => {
+//             res.status(200).json({ person: person });
+//         })
+//         .catch(e => console.log(e))
+// });
+ 
+//Delete an existing Person
+app.delete('/api/person/id', (req, res) => {
+    const id = req.params.id;
+    const person = req.body.perosn
+    person.splice(id, 1);
+    res.status(204).send();
+    })
 
 
 app.listen(port, () => console.log(`express-api and listening on port ${port}!`));
