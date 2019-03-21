@@ -153,5 +153,33 @@ res.status(200).json({article: article})
 })
 
 
+//I want to listen to the request unless sync to happened
+//use alter:true not force to keep your database but we couldn't and it cause an error
+//http://localhost:3000/api/article/2/comments
+//http://localhost:3000/api/person/1/articles
+//Get All Articles by Person Record ID
+app.get('/api/person/:id/articles',(req,res) => {
+    //to show each person with his/her Article
+    models.Person.findByPk(req.params.id,{include:[{model:models.Article}]})
+    .then(person =>
+        {
+    res.status(200).json({person: person})
+    
+        }).catch(e => console.log(e));
+})
 
+////http://localhost:3000/api/p/article/1/comments
+
+
+
+
+
+models.sequelize.sync().then(()=>{
+console.log('sync complete');
+// models.Article.create({
+// title: 'test',
+// content:'this is a body',
+// PersonId:1
+
+});
 app.listen(port,()=>console.log(`express-api app listening on port ${port}!`));
