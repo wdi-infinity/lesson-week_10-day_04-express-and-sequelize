@@ -108,17 +108,35 @@ app.delete('/api/person/:id', (req, res) => {
 
 // update current person by ID 
 
-app.patch('/api/person/:id', (req, res) => {
-    if (!isNaN(req.params.id)) {
-        models.Person.update({ first_name: "SARA", last_name: "ALYAHYA" }, { where: { id: req.params.id } }
-        )
-            .then(person => {
+// app.patch('/api/person/:id', (req, res) => {
+//     if (!isNaN(req.params.id)) {
+//         models.Person.update({ first_name: "SARA", last_name: "ALYAHYA" }, { where: { id: req.params.id } }
+//         )
+//             .then(person => {
 
-                res.status(202).json({ person: person });
+//                 res.status(202).json({ person: person });
+//             })
+//             .catch(e => console.log(e));
+//     } else {
+//         res.status(406).json({ error: 'Invalid ID' });
+//     }
+// });
+
+// //////////////////////
+//  Update an existiong person by id , just updated the first_name and last_name
+app.put('/api/person/:id', (req, res) => {
+    models.Person.findByPk(req.params.id)
+        .then(person => {
+            person.update({
+                first_name: req.body.first_name,
+                last_name: req.body.last_name
             })
-            .catch(e => console.log(e));
-    } else {
-        res.status(406).json({ error: 'Invalid ID' });
-    }
-});
+                .then(person => {
+                    res.status(200).json({ person: person });
+                })
+                .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
+})
+
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
