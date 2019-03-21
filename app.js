@@ -112,14 +112,63 @@ app.put('/api/person/:id', (req, res) => {
   }).catch(e => console.log(e));
 });
 
-//=> http://localhost:3000/api/articales
+//=> http://localhost:3000/api/articles
 app.get('/api/articles', (req, res) => {
-  models.Article.findAll().then(articles => {
-  res.status(200).json({articles: articles});
+  models.Article.findAll().then(oneArticles => {
+  res.status(200).json({articles: oneArticles});
   }).catch(e => console.log(e))
   })
+
+//=> http://localhost:3000/api/article/1  => show single article
+app.get('/api/article/:id', (req, res) => {
+  models.Article.findByPk(req.params.id).then(article => {
+    res.status(200).json({article: article});
+  })
+});
+
+models.sequelize.sync().then(() => 
+{
+  console.log('sync com;list');
+
+
+models.Article.create({
+  title: 'test',
+  content: ' this is a nbody ',
+  PersonId:1
+});
+
+
+//=> http://localhost:3000/api/person/1/articles  => show all articles in person
+// get all articales by person recorde ID 
+
+app.get('/api/person/:personID', (req, res) => {
+  models.Article.findByPk(req.params.personID, {include:[{model: models.Article }]}).then(person => {
+  res.status(200).json({ person: person});
+  }).catch(e => console.log(e))
+})
+
+// Get ALL Articles by Person Record ID
+app.get('/api/person/:id/articles', (req, res) => {
+  models.Person.findByPk(req.params.id, { include: [{model: models.Article}] }).then(person => {
+    res.status(200).json({ article: person });
+  })
+  .catch(e => console.log(e));
+});
+
+});
+
+
+// app.get('/api/persons', (req, res) => {
+//   models.Person.findByPk().then(person => {
+//   res.status(200).json({person: person, );
+//   }).catch(e => console.log(e))
+//   })
+
 
 app.listen(port, () => {
   console.log(`.:|:|:|:|:|express-api app Server started on ${port}|:|:|:|:.`);
   console.error()
 })
+
+
+
