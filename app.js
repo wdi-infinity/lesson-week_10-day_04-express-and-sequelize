@@ -112,6 +112,13 @@ app.put('/api/person/:id', (req, res) => {
   }).catch(e => console.log(e));
 });
 
+//=> http://localhost:3000/api/articales
+app.get('/api/articles', (req, res) => {
+  models.Article.findAll().then(articles => {
+  res.status(200).json({articles: articles});
+  }).catch(e => console.log(e))
+  })
+
 app.listen(port, () => {
   console.log(`.:|:|:|:|:|express-api app Server started on ${port}|:|:|:|:.`);
   console.error()
