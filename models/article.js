@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT
   }, { tableName: "articles" });
   Article.associate = function (models) {
+    Article.belongsTo(models.Person);
     // associations can be defined here
   };
   return Article;
