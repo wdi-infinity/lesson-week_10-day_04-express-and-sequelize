@@ -153,5 +153,33 @@ app.get('/api/article/:id', (req, res) => {
 
 });
 
+// Get All Articles by Person Record ID 
 
-app.listen(port, () => console.log(`express-api listening on port ${port}!`))
+app.get('/api/person/:id/articles', (req, res) => {
+    if (!isNaN(req.params.id)) {
+        models.Person.findByPk(req.params.id, { include: [{ model: models.Article }] })
+            .then(person => {
+                if (person !== null) {
+
+                    res.status(200).json({ person: person });
+                }
+                else {
+                    res.status(404).json({ error: 'Person Not Found' });
+                }
+            })
+            .catch(e => console.log(e));
+    } else {
+        res.status(406).json({ error: 'Invalid ID' });
+    }
+});
+
+
+models.sequelize.sync().then(() => {
+    console.log('sync complete');
+    // models.Article.create({
+    //     title: 'test 2',
+    //     content: 'this is a body 2',
+    //     PersonId: 1
+    // });
+    app.listen(port, () => console.log(`express-api listening on port ${port}!`))
+})
