@@ -111,4 +111,24 @@ app.get('/api/articles', (req, res) => {
         .catch(e => console.log(e))
 })
 
+app.get('/api/articles/:id', (req, res) => {
+    if (!isNaN(req.params.id)) {
+        models.Article.findByPk(req.params.id)
+            .then(articles => {
+                if (articles !== null) {
+                    res.status(200).json({ articles: articles });
+                }
+                else {
+                    res.status(404).json({
+                        error: 'Article not found'
+                    });
+                }
+            })
+            .catch(e => console.log(e))
+    }
+    else {
+        res.status(406).json({ error: 'Invalid ID' })
+    }
+})
+
 app.listen(port, () => console.log(`express-api app listeing on port ${port}!`))
