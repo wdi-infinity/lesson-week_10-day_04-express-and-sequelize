@@ -96,12 +96,26 @@ app.delete('/api/person/:id', (req, res) => {
         .catch(e => console.log(e));
 });
 
+// Put --> update all fields of the record / Patch --> update one field 
+// We usulay use Put for both cases, whihc is more conveneit
+// update an existing person
+app.put('/api/person/:id', (req, res) => {
+    // --> we need to define and find the person we want to update
+    models.Person.findByPk(req.params.id)
+        // person object -> holds a refrence of a person from sequlize   
+        .then(person => {
 
-// update 
-app.put('/person/:id', (req, res) => {
-    const id = req.params.id
-    person[id] = person;
-    res.status(200).json({ person: person });
+            // person.update --> excpect a hash --> key and value * and create too
+            person.update({
+                first_name: req.body.first_name,
+                last_name: req.body.last_name
+            }).then(person => {
+                res.status(200).json({ person: person });
+            })
+        }).catch(e => console.log(e))
+
+
+        .catch(e => console.log(e));
 });
 
 
