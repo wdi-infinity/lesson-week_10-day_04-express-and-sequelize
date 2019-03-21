@@ -141,6 +141,35 @@ app.get('/api/article/:id',(req,res)=>{
   .catch(e=> console.log(e));
 })
 
+
+
+//Get all articels by person ID
+ app.get('/api/person/:id/articles',(req,res)=>{
+
+    models.Person.findByPk(req.params.id,{include:[{model : models.Article}]})
+    .then(person =>{
+     
+     res.status(200).json({
+         person: person
+    })
+   
+ 
+     }) .catch(e=> console.log(e));
+ })
+
+models.sequelize.sync()
+.then(()=> {
+    console.log('sync complete');
+
+    models.Article.create({
+        title: 'test',
+        content: 'this is a body',
+        personId:1
+    })
+
+    
 app.listen(PORT, () => {
   console.log("server running on port"+PORT)
+})
+
 });
