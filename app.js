@@ -71,7 +71,11 @@ app.put('/api/person/:id' , (req , res) => {
     const id = req.params.id
     models.Person.findByPk(id)
     .then( person => {
-        person.update(req.body.person) 
+        person.update({ id: req.body.id ,first_name: req.body.first_name , last_name: req.body.last_name
+
+                     }) 
+
+        // person.update(req.body) 
         res.status(201).json({person: person})
     })
     .catch( e => console.log(e))
@@ -81,15 +85,19 @@ app.put('/api/person/:id' , (req , res) => {
 //localhost:3000/api/person/:id to Delete person at a time
 
 
-app.delete('/api/person/:id' , (req , res) => {
+app.delete('/api/person/:id', (req, res) => {
     const id = req.params.id
     models.Person.findByPk(id)
-    .then( person => {
-        person.destroy()
-        res.status(201).json()
-    })
-    .catch( e => console.log(e))
-  
-})
+      .then(person => {
+        person.destroy().then(() => {
+          res.status(200).json({
+            result: `Record ID ${id} Deleted`,
+            success: true
+          });
+        })
+        .catch(e => console.log(e));
+      })
+      .catch(e => console.log(e));
+  });
 
 app.listen(port, ()=> console.log(`express-api listening on port ${port}`));
