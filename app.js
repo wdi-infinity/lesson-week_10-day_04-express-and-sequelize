@@ -64,21 +64,31 @@ app.post('/api/person', (req, res) => {
 });
 
 
+// app.delete('/api/person/:id', (req, res) => {
+//     if (!isNaN(req.params.id)) {
+//         models.Person.destroy({
+//             where: { id: req.params.id }
+//         })
+//             .then(person => {
+//                 res.status(201).json({ person: person });
+//             })
+//             .catch(e => console.log(e));
+//     } else {
+//         res.status(406).json({ error: 'Invalid ID' });
+//     }
+// });
+
 app.delete('/api/person/:id', (req, res) => {
-    if (!isNaN(req.params.id)) {
-        models.Person.destroy({
-            where: { id: req.params.id }
-        })
-            .then(person => {
-                res.status(201).json({ person: person });
+    models.Person.findByPk(req.params.id)
+        .then(person => {
+            person.destroy().then(() => {
+                res.status(201).json({ result: `Record ID ${req.params.id} deleted` });
             })
-            .catch(e => console.log(e));
-    } else {
-        res.status(406).json({ error: 'Invalid ID' });
-    }
+                .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
+
 });
-
-
 app.patch('/api/person/:id', (req, res) => {
     if (!isNaN(req.params.id)) {
         models.Person.update({ first_name: "Rawan9", last_name: "Alahmadi" }, { where: { id: req.params.id } }
