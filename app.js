@@ -1,6 +1,5 @@
 import express from 'express';
 import models from './models';
-import { runInNewContext } from 'vm';
 import bodyParser from 'body-parser'
 
 const app = express();
@@ -122,5 +121,25 @@ app.get('/api/article/:id', (req, res) => {
     }).catch(e => console.log(e))
 })
 
+//http://localhost:3000/api/person/id/articles
 
-app.listen(port, () => console.log(`express-api and listening on port ${port}!`));
+// get all articales by person record ID
+app.get('/api/person/:id/articles', (req, res) => {
+    models.Person.findByPk(req.params.id, { include: [{ model: models.Article}]})
+    .then(person => {
+        res.status(200).json({person: person});
+
+    }).catch(e => console.log(e))
+})
+
+models.sequelize.sync()
+.then(() => {
+    console.log('sync complete');
+    models.Article.create({
+        title: 'text 2',
+        content: 'this is a body of 2',
+        PersonId: 1
+    })
+    app.listen(port, () => console.log(`express-api and listening on port ${port}!`));
+})
+
