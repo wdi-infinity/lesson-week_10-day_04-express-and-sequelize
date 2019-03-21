@@ -101,18 +101,19 @@ app.get("/api/articles", (req, res) => {
 
 app.get("/api/article/:id", (req, res) => {
   if (isNaN(req.params.id) === false) {
-    ig
+    ig;
     models.Article.findByPk(req.params.id)
       .then(article => {
-        if(article === null){
+        if (article === null) {
           res.status(200).json({ article: article });
-        }
-        else{
+        } else {
           res.status(404).json({ msg: "article is not found" });
         }
       })
       .catch(e => console.log(e));
-  }.then()
+  } else {
+    res.status(406).json({ error: "Invalid ID" });
+  }
 });
 
 app.listen(port, () => console.log(`working on port ${port}`));
