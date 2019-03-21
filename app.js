@@ -64,6 +64,7 @@ app.get('/api/people', (req, res) => {
         .catch(e => console.log(e));
 });
 
+
 //update an existing person
 http://localhost:3000/api/person/533
 app.put('/api/person/:id', (req, res) => {
@@ -73,14 +74,16 @@ app.put('/api/person/:id', (req, res) => {
         // only update the fields I care about 
         person.update({
             first_name: req.body.first_name,
-            last_name: req.body.last.last_name
+            last_name: req.body.last_name
         }).then(person => {
             //the database was able to udpate the user
-            //and it sent us back an udpate 
+            //and it sent us back an udpate Record with the new information
+            //we can now send back this  new information  to the user
             res.status(200).json({ person: person });
         }).catch(e => console.log(e));
     }).catch(e => console.log(e));
 });
+
 
 // Delete existing Person by Record ID
 app.delete('/api/person/:id', (req, res) => {
