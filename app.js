@@ -50,11 +50,18 @@ app.get('/api/person/:id', (req, res) => {
     .catch(e => console.log(e))
     
   });
+  // delete existing person by record id
   app.delete('/api/person/:id', (req, res) => {
-    const id = req.body.id;
-    Person.splice(id, 1);
-  
-    res.status(204).send();
+    models.Person.findByPk(req.params.id)
+    .then(person => {
+      person.destroy().then(() => {
+        res.status(200).json({
+          result: `Record ID ${req.params.id} Deleted`,
+        })
+      })
+      .catch(e => console.log(e)); 
+    })
+      .catch(e => console.log(e)); 
   });
   
 // localhost: 3000/api/people get all people
