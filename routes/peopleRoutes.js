@@ -1,44 +1,39 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import models from './models';
-import peopleRoutes from './routes/peopleRoutes'
+import models from '../models';
 
-const app = express();
-const port = 3000;
+  const router = express.Router();
 
-/** **  Middleware  *****/
-app.use(bodyParser.json());
-app.use(peopleRoutes)
-/****  routes  **** */
+  router.get('/api/people', (req, res) => {
 
-// Root Path
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Hello WDI-Infinity!',
-  });
-});
-
-// Get All people
-
-// get person Record ID
-app.get('/api/person/:id', (req, res) => {
-  if (!isNaN(req.params.id)) {
-    models.Person.findByPk(req.params.id)
-
-      .then((person) => {
-        if (person !== null) {
-          res.status(200).json({ person });
-        } else {
-          res.status(416).json({ message: 'person not found' });
-        }
+    models.Person.findAll()
+      .then((peopleFromDB) => {
+        res.status(200).json({
+          people: peopleFromDB,
+        });
       })
       .catch(e => console.log(e));
-  } else {
-    res.status(406).json({ error: 'onvilde ID' });
-  }
-});
+  });
 
-app.post('/api/person', (req, res) => {
+  router.get('/api/person/:id', (req, res) => {
+    if (!isNaN(req.params.id)) {
+      models.Person.findByPk(req.params.id)
+  
+        .then((person) => {
+          if (person !== null) {
+            res.status(200).json({ person });
+          } else {
+            res.status(416).json({ message: 'person not found' });
+          }
+        })
+        .catch(e => console.log(e));
+    } else {
+      res.status(406).json({ error: 'onvilde ID' });
+    }
+  });
+
+  
+router.post('/api/person', (req, res) => {
   models.Person.create(req.body)
     .then((personNewFromDB) => {
       res.status(201).json({
@@ -48,14 +43,7 @@ app.post('/api/person', (req, res) => {
     .catch(e => console.log(e));
 });
 
-
-// app.delete('/api/person/:id', (req, res) => {
-//   const id = req.params.id;
-//     .then((personDeleteFromDB)=>{
-//     people.splice(id, 1);
-//   res.status(204).send();
-// });
-app.delete('/api/person/:id', (req, res) => {
+router.delete('/api/person/:id', (req, res) => {
   models.Person.findByPk(req.params.id) // findByPk is find by praymary key 
   .then(person => {
     person.destroy().then(() => {
@@ -66,25 +54,10 @@ app.delete('/api/person/:id', (req, res) => {
   })
 })
 
-//   people.splice(id, 1);
-//   res.status(204).send();
-//  });
-
-
-// app.put('/api/person/:id', (req, res) => {
-//   models.Person.findByPk(req.params.id).then(person => {
-//     person.update( {
-//       first_name:req.body.first_name,
-//       last_name:req.body.last_name
-//     } ).then(person => {
-//       res.status(200).json({person: person });
-//     }).catch(e => console.error(e));
-//   }).catch(e => console.error(e));
-// })
 
 // Update an existing Person
 http://localhost:3000/api/person/533
-app.put('/api/person/:id', (req, res) => {
+router.put('/api/person/:id', (req, res) => {
   // Find Person By ID sent to us by User in the URL
   models.Person.findByPk(req.params.id).then(person => {
     // Call the Update function on the Person the database sent us back.
@@ -104,14 +77,14 @@ app.put('/api/person/:id', (req, res) => {
 });
 
 //=> http://localhost:3000/api/articles
-app.get('/api/articles', (req, res) => {
+router.get('/api/articles', (req, res) => {
   models.Article.findAll().then(oneArticles => {
   res.status(200).json({articles: oneArticles});
   }).catch(e => console.log(e))
   })
 
 //=> http://localhost:3000/api/article/1  => show single article
-app.get('/api/article/:id', (req, res) => {
+router.get('/api/article/:id', (req, res) => {
   models.Article.findByPk(req.params.id).then(article => {
     res.status(200).json({article: article});
   })
@@ -132,14 +105,14 @@ models.Article.create({
 //=> http://localhost:3000/api/person/1/articles  => show all articles in person
 // get all articales by person recorde ID 
 
-app.get('/api/person/:personID', (req, res) => {
+router.get('/api/person/:personID', (req, res) => {
   models.Article.findByPk(req.params.personID, {include:[{model: models.Article }]}).then(person => {
   res.status(200).json({ person: person});
   }).catch(e => console.log(e))
 })
 
 // Get ALL Articles by Person Record ID
-app.get('/api/person/:id/articles', (req, res) => {
+router.get('/api/person/:id/articles', (req, res) => {
   models.Person.findByPk(req.params.id, { include: [{model: models.Article}] }).then(person => {
     res.status(200).json({ article: person });
   })
@@ -148,18 +121,5 @@ app.get('/api/person/:id/articles', (req, res) => {
 
 });
 
-
-// app.get('/api/persons', (req, res) => {
-//   models.Person.findByPk().then(person => {
-//   res.status(200).json({person: person, );
-//   }).catch(e => console.log(e))
-//   })
-
-
-app.listen(port, () => {
-  console.log(`.:|:|:|:|:|express-api app Server started on ${port}|:|:|:|:.`);
-  console.error()
-})
-
-
-
+  
+  export default router ;
