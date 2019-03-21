@@ -69,7 +69,15 @@ app.post('/api/person', ( req, res)=>{
         res.status(201).json({ person: personNewFromDB });
     })
     .catch(e => console.log(e));
-    // res.status(200).json({result:req.body});
+})
+
+//update person
+app.post('/api/person/:id', (req, res) => {
+    models.Person.update(req.body)
+        .then(personUpdateFromDB => {
+            res.status(201).json({ person: personUpdateFromDB });
+        })
+        .catch(e => console.log(e));
 })
 
 
