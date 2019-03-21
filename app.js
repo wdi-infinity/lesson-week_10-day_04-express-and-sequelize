@@ -115,7 +115,26 @@ app.get('/api/articles', (req, res) => {
             res.status(200).json({ article: article });
         }).catch(e => console.log(e));
     })
-
-
 })
-app.listen(port, () => console.log(`express - api app listening on port ${port} !`));
+//http://localhost:3000/api/person/1/articles
+//get all articles by person Record ID
+app.get('/api/person/:id/articles', (req, res) => {
+    models.Person.findByPk(req.params.id, { include: [{ model: models.Article }] })
+        .then(person => {
+            res.status(200).json({ person: person });
+        }).catch(e => console.log(e));
+});
+
+
+models.sequelize.sync().then(() => {
+    console.log('sync complete');
+    //if just server is run create new article 
+    // models.Article.create({
+    // title: 'test 2',
+    // content: 'this is a body',
+    //  PersonId: 1
+    //  });
+    app.listen(port, () => console.log(`express - api app listening on port ${port} !`));
+})
+
+
