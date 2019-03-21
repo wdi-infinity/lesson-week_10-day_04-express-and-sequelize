@@ -135,4 +135,17 @@ app.get('/api/articles', (req, res) => {
     }).catch(e => console.log(e));
 })
 
+//localhost:3000/api/article
+app.get('/api/article/:id', (req, res) => {
+    models.Article.findByPk(req.params.id).then(article => {
+        res.status(200).json({
+            article: article
+        });
+    }).catch(e => console.log(e));
+})
+
+
+
+
+
 app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
