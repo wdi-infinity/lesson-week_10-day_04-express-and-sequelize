@@ -101,7 +101,6 @@ app.get("/api/articles", (req, res) => {
 
 app.get("/api/article/:id", (req, res) => {
   if (isNaN(req.params.id) === false) {
-    ig;
     models.Article.findByPk(req.params.id)
       .then(article => {
         if (article === null) {
@@ -116,4 +115,25 @@ app.get("/api/article/:id", (req, res) => {
   }
 });
 
-app.listen(port, () => console.log(`working on port ${port}`));
+//http://localhost:3000/api/person/1/articles
+
+//get all articles by person ID
+app.get("/api/person/:id/articles", (req, res) => {
+  models.Person.findByPk(req.params.id, {
+    include: [{ model: models.Article }]
+  }).then(person => {
+    res.status(200).json({ person: person });
+  });
+});
+models.sequelize.sync().then(() => {
+  console.log("sync complete");
+
+  // models.Article.create({
+  //   title: "test",
+  //   content: "this a test body",
+  //   PersonId: 1
+  // });
+  app.listen(port, () =>
+    console.log(`express-api app working on port ${port}`)
+  );
+});
