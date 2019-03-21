@@ -100,4 +100,11 @@ app.delete('/api/person/:id', (req, res) => {
         .catch(e => console.log(e));
 });
 // eslint-disable-next-line no-console
+app.get('/api/articles', (req, res) => {
+    //res.status(200).json({ msg: 'working' }); this line to test message show in postman
+    models.Article.findAll().then(articles => {
+        //respon to artical  to be as json
+        res.status(200).json({ articles: articles });
+    }).catch(e => console.log(e))
+})
 app.listen(port, () => console.log(`express - api app listening on port ${port} !`));
