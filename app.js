@@ -100,6 +100,19 @@ http://localhost:3000/api/person/533
         }).catch(e => console.log(e)); 
     })
 
+    app.get('/api/articles', (req, res) => {
+        models.Article.findAll()
+        .then(articles => {
+        res.status(200).json({articles: articles })
+    }).catch(e => console.log(e));
+    });
+
+    app.get('/api/article/:id', (req, res) => {
+        models .Articles.findPk(req.params.id).then(article => {
+        res.status(200).json({article: article});
+    }).catch(e => console.log(e));
+    });
+
 
 // localhost:3000/people.html 
 // localhost:3000/api/people
