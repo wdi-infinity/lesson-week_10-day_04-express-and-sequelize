@@ -112,13 +112,25 @@ app.delete('/api/person/:id', (req, res)=> {
         .catch(e => console.log(e));
 });
 
-// GET of API Articales
+// GET of all API Articales
 
 app.get('/api/articles', (req, res) => {
     models.Article.findAll().then(articles => {
         res.status(200).json({ articles: articles });
     }).catch(e => console.log(e))
 })
+
+// GET of one  API Articales by ID
+
+app.get('/api/articles/:id', (req, res) => {
+    models.Article.findByPk(req.params.id).then(articles => {
+        res.status(200).json({ articles: articles });
+    }).catch(e => console.log(e))
+})
+
+
+
+
 
 
 
