@@ -132,5 +132,15 @@ app.get('/api/articles', (req, res) => {
     }).catch(e => console.log(e));
 })
 
+// get single article
+app.get('/api/article/:id', (req, res) => {
+    // res.status(200).json({ message: 'WORKING! ' });
+    models.Article.findByPk(req.params.id).then(article => {
+        // bring all aricles 
+        res.status(200).json({ article: article });
+    }).catch(e => console.log(e));
+})
+
+
 app.listen(port, () => console.log(`express-api listening on port ${port}`))
 
