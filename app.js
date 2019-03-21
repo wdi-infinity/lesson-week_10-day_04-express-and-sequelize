@@ -75,13 +75,22 @@ app.get('/api/people', (req, res) => {
   .catch(e => console.log(e)); 
 });
 
-
+// update an existing person
 app.put('/api/person/:id', (req, res) => {
-  const id = req.body.id;
-  Person.splice(id, 1);
-  people[id] = req.body.Person;
-  const Person = people[id];
-  res.status(201).json({person: Person});
+  // find person by id sent to us by user in the url
+  models.Person.findByPk(req.params.id).then(person => {
+    // call the update function on the person the database sent us back 
+    // only update the fields i care about
+      person.update({
+        first_name: req.body.first_name,
+        last_name: req.body.last_name
+      }).then(person =>{
+        // the database was able to update the user
+        // and it sent us back an updated record with the new information
+        // we can now sent back this new information to the user
+        res.status(200).json({person: person});
+      }).catch(e => console.log(e)); 
+    }).catch(e => console.log(e)); 
 });
 
 // eslint-disable-next-line no-console
