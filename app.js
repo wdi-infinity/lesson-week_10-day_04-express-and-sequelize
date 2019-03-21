@@ -1,7 +1,6 @@
 import express from 'express';
 import models from './models';
 import bodyParser from 'body-parser';
-import { create } from 'domain';
 
 const app = express();
 const port = 3000;
@@ -19,16 +18,18 @@ app.get('/', (req, res) => {
 });
 
 
+
 // Get All people
 app.get('/api/people', (req, res) => {
     models.Person.findAll()
-        .then(people => {
+        .then(peopleFromDB => {
             res.status(200).json({
                 people: peopleFromDB
             });
         })
         .catch(e => console.log(e))
 });
+
 
 
 // Get person by Record ID
@@ -65,9 +66,21 @@ app.post('/api/person', (req, res) => {
 
 //Update a person
 app.put('/api/person/:id', (req, res) => {
-    models.Person.findById(req.params.id)
+    //find  Person by ID that sent to us bu user in the URL
+    models.Person.findByPk(req.params.id)
+        //call the update function on the person that database sent to us
+        //only updae the fields i care about
         .then(person => {
-            res.status(200).json({ person: person });
+            person.update({
+                first_name: req.body.first_name,
+                last_name: req.body.last_name
+            })
+                .then(person => {
+                    //the database was able to update the user
+                    //
+                    res.status(200).json({ person: person })
+                })
+                .catch(e => console.log(e))
         })
         .catch(e => console.log(e))
 });
