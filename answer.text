@@ -31,3 +31,11 @@ app.delete('/api/person/:id', (req, res) => {
     })
     .catch(e => console.log(e));
 });```
+
+==========when thinng gose bad ==============
+sequelize db:drop
+
+sequelize db:create
+
+sequelize db:migrate
+
