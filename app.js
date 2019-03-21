@@ -131,4 +131,32 @@ app.delete('/api/person/:id', (req, res) => {
       
     })
 
+    app.get('/api/article/:id' , (req , res ) => {
+
+        const id = req.params.id
+        if(!isNaN(id)){
+        models.Article.findByPk(id)//One person
+    
+        .then(article => {
+            if (article !== null){
+            res.status(200).json({  article: article  })
+            }
+            else {
+                res.status(404).json({  error: 'article Not Found'  })
+            }
+        })
+        .catch( e => console.log(e))
+    }
+    else {
+        res.status(406).json({  error: 'Invalid ID'  })
+    }
+    })
+
+    app.post('/api/articles' , (req, res) => {
+        models.Article.create({title: req.body.title , content: req.body.content})
+        .then(article => {
+            res.status(200).json({article : article})
+        })
+        .catch( e => console.log(e))
+    })
 app.listen(port, ()=> console.log(`express-api listening on port ${port}`));
