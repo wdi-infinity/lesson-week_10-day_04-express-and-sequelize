@@ -112,6 +112,13 @@ app.delete('/api/person/:id', (req, res)=> {
         .catch(e => console.log(e));
 });
 
+// GET of API Articales
+
+app.get('/api/articles', (req, res) => {
+    models.Article.findAll().then(articles => {
+        res.status(200).json({ articles: articles });
+    }).catch(e => console.log(e))
+})
 
 
 
