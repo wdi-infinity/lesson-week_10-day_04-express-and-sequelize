@@ -2,7 +2,7 @@ import express from 'express';
 import models from './models';
 import bodyParser from 'body-parser';
 
-
+const PORT = 3000;
 const app = express();
 
 
@@ -52,7 +52,7 @@ app.get('/api/person/:id', (req, res) => {
   });
 
 
-
+//create new record
  app.post('/api/person', (req,res)=>{
     models.Person.create(req.body)
 
@@ -64,9 +64,34 @@ app.get('/api/person/:id', (req, res) => {
  });
 
 
+// //update 
+
+// app.put('/api/person/:id',(req,res)=> {
+// const id =  models.Person.findByPk(req.params.id)
+// const person = req.body.person;
+// models.Person[id]=person;
+//  res.status(201).json({person:person})
+
+// });
 
 
-const PORT = 3000;
+
+
+app.delete('/api/person/:id',(req,res)=> {
+
+    
+    models.Person.destroy({
+        where: {id: req.params.id }
+    })
+  .then(person => {
+    res.status(201).json({message: "sucsess"})
+  })
+  .catch(e => console.log(e));
+
+});
+
+
+
 
 app.listen(PORT, () => {
   console.log("server running on port"+PORT)
