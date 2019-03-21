@@ -70,9 +70,8 @@ app.put('/api/person/:id' , (req , res) => {
    
     const id = req.params.id
     models.Person.findByPk(id)
-    
     .then( person => {
-        person[id]= req.body 
+        person.update(req.body.person) 
         res.status(201).json({person: person})
     })
     .catch( e => console.log(e))
@@ -80,12 +79,14 @@ app.put('/api/person/:id' , (req , res) => {
 })
 
 //localhost:3000/api/person/:id to Delete person at a time
+
+
 app.delete('/api/person/:id' , (req , res) => {
     const id = req.params.id
     models.Person.findByPk(id)
     .then( person => {
-        person.splice(id, 1);
-        res.status(201).send()
+        person.destroy()
+        res.status(201).json()
     })
     .catch( e => console.log(e))
   
