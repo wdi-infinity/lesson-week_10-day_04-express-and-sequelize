@@ -65,6 +65,22 @@ app.post('/api/person', (req,res)=> {
     .catch(e=> console.log(e));
 });
 
+//delete existing Person by Record ID
+app.delete('/api/person/:id', (req,res)=>{
+    models.Person.findByPk(req.params.id)
+    .then(person =>{
+       person.destroy().then(( ) => {
+           res.status(200).json({
+               result: `Record ID ${req.params.id} Deleted`,
+               success: true 
+            });
+        })
+        .catch(e => console.log(e));
+      })
+      .catch(e => console.log(e));
+  });
+
+  
 //put
 app.put('/api/person/:id', (req,res)=> {
     const id = req.params.id;
@@ -72,22 +88,6 @@ app.put('/api/person/:id', (req,res)=> {
     dishes[id] = dish;
     res.status(201).json({person: person});
 });
-
-
-//delete 
-
-app.delete('/api/person/:id', (req,res)=>{
-    models.Person.delete(req.body)
-    .then(personDelFromDb =>{
-        if(person !== null ) {
-            res.status(200).json({ person: person });
-        } else {
-        res.status(404).json({person: personNewFromDB});
-        }
-      })
-       .catch(e=> console.log(e));
-    })
-   
 
 
 
