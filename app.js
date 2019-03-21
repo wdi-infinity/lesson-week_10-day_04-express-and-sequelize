@@ -84,9 +84,42 @@ app.post('/api/person',(req,res) =>  {
 });
 
 
+//To update
+app.put('/api/person/:id', (req, res) => {
+    if( !isNaN(req.params.id) ) {
+        models.Person.findByPk(req.params.id)
+        models.Person.create(req.body)
+        .then(personNewFromDB => {
+          if(person !== null) {
+            res.status(200).json({ person: personNewFromDB });
+          } else {
+            res.status(404).json({ error: 'Person Not Found' });
+          }
+        })
+        .catch(e => console.log(e));
+      } else {
+        res.status(406).json({ error: 'Invalid ID' });
+      }
+    });
 
-
-
+//To delete exiting Person by record Id 
+//find the record first
+//then delete it 
+app.delete('/api/person/:id', (req, res) => {
+    models.Person.findByPk(req.params.id)
+    //person is reference to the record
+    .then(person => {
+        person.destroy()
+        .then(()=>{res.status(200).json({
+            result:`Record ID ${req.params.id} Deleted`,
+            success: true
+        });
+        
+    })
+    .catch(e => console.log(e));
+    })
+    .catch(e => console.log(e));
+});
 
 
 
