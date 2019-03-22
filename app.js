@@ -25,16 +25,7 @@ app.get('/', (req ,res) => {
 models.sequelize.sync()
 .then(()=> {
     console.log('sync complete');
-
-    // models.Article.create({
-    //     title: 'test',
-    // //     content: 'this is a body',
-    // //     PersonId:2
-    // })
-
-    
 app.listen(PORT, () => {
   console.log("server running on port"+PORT)
 })
-
 });

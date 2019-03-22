@@ -49,8 +49,6 @@ router.get('/api/person/:id', (req, res) => {
  });
 
 
-//update 
-
 // Update an existing Person
 
 router.put('/api/person/:id', (req, res) => {
@@ -72,22 +70,8 @@ router.put('/api/person/:id', (req, res) => {
 });
 
 
-//Delete
 
-//my solve
-// app.delete('/api/person/:id',(req,res)=> {
-//     models.Person.destroy({
-//         where: {id: req.params.id }
-//     })
-//   .then(person => {
-//     res.status(201).json({message: "sucsess"})
-//   })
-//   .catch(e => console.log(e));
-
-// });
-
-
-//usman solve
+//Remove user
 router.delete('/api/person/:id',(req,res)=> {
       models.Person.findByPk(req.params.id)
       .then(person => {
