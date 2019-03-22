@@ -90,16 +90,16 @@ router.get('/api/article/:id', (req, res) => {
   })
 });
 
-models.sequelize.sync().then(() => 
-{
-  console.log('sync com;list');
+// models.sequelize.sync().then(() =>    بداية الوظيفة المسؤولة عن اضافة المقالات
+// {
+//   console.log('sync com;list');
 
 
-models.Article.create({
-  title: 'test',
-  content: ' this is a nbody ',
-  PersonId:1
-});
+// models.Article.create({
+//   title: 'test',
+//   content: ' this is a body ',
+//   PersonId:3
+// });
 
 
 //=> http://localhost:3000/api/person/1/articles  => show all articles in person
@@ -119,7 +119,7 @@ router.get('/api/person/:id/articles', (req, res) => {
   .catch(e => console.log(e));
 });
 
-});
+// });    التقفيلة حقتها المسؤولة عن اضافة المقالات
 
   
   export default router ;
