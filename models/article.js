@@ -6,10 +6,13 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       content: DataTypes.TEXT
     },
-    { tableName: "article" }
+    { tableName: "articles" }
   );
   Article.associate = function(models) {
     // associations can be defined here
+    Article.belongsTo(models.Person, {
+      foreignKey: "person_id"
+    });
   };
   return Article;
 };
