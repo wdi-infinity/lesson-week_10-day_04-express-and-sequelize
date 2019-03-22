@@ -23,10 +23,6 @@ app.get('/', (req, res) => {
 // localhost:3000/
 
 
-
-
-
-
 // http://localhost:3000/api/articles
 
 app.get('/api/articles', (req, res) => {
@@ -48,6 +44,21 @@ app.get('/api/article/:id', (req, res) => {
         }).catch(e => console.log(e));
 })
 
+// delete single article by record ID
+app.delete('/api/article/:id', (req, res) => {
+    models.Person.findByPk(req.params.id)
+        .then(article => {
+            article.destroy().then(() => {
+                res.status(201).json({
+                    result: `Record ID ${req.params.id} Deleted`,
+                    success: true
+                });
+            })
+                .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
+
+})
 
 
 models.sequelize.sync()
