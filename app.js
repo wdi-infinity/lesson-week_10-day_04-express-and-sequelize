@@ -44,9 +44,18 @@ app.get('/api/article/:id', (req, res) => {
         }).catch(e => console.log(e));
 })
 
+app.post('/api/article', (req, res) => {
+    models.Article.create(req.body)
+        .then(article => {
+            res.status(201).json({ article: article });
+        })
+        .catch(e => console.log(e));
+})
+
+
 // delete single article by record ID
 app.delete('/api/article/:id', (req, res) => {
-    models.Person.findByPk(req.params.id)
+    models.Article.findByPk(req.params.id)
         .then(article => {
             article.destroy().then(() => {
                 res.status(201).json({
@@ -59,6 +68,23 @@ app.delete('/api/article/:id', (req, res) => {
         .catch(e => console.log(e));
 
 })
+
+//  Update an existiong article by id , just updated the title and content
+app.put('/api/article/:id', (req, res) => {
+    models.Article.findByPk(req.params.id)
+        .then(article => {
+            article.update({
+                title: req.body.title,
+                content: req.body.content
+            })
+                .then(article => {
+                    res.status(200).json({ article: article });
+                })
+                .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
+})
+
 
 
 models.sequelize.sync()
