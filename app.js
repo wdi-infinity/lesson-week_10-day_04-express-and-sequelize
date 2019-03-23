@@ -22,14 +22,14 @@ app.get('/', (req, res) => {
     });
 });
 
-models.sequelize.sync()
-.then(() => {
-    console.log('sync complete');
-    models.Article.create({
-        title: 'text 2',
-        content: 'this is a body of 2',
-        PersonId: 1
-    })
+// models.sequelize.sync()
+// .then(() => {
+//     console.log('sync complete');
+//     models.Article.create({
+//         title: 'text 2',
+//         content: 'this is a body of 2',
+//         PersonId: 1
+//     })
     app.listen(port, () => console.log(`express-api and listening on port ${port}!`));
-})
+// })
 

@@ -54,7 +54,7 @@ router.put('/api/article/:id', (req, res) => {
            content: req.body.content
     }).then(article => {
 
-        res.status(200).json({person: article});
+        res.status(200).json({article: article});
     }).catch(e => console.log(e))
     })
        .catch(e => console.log(e))
