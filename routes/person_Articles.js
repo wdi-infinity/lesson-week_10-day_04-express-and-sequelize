@@ -1,13 +1,8 @@
 import express from "express";
+import models from "../models";
 import bodyParser from "body-parser";
-import people from "./people";
-import articles from "./articles";
 
 const router = express.Router();
-
-/*** MiddleWare ***/
-router.use(people);
-router.use(articles);
 
 //get all articles by person ID
 router.get("/api/person/:id/articles", (req, res) => {
