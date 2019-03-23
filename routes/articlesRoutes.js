@@ -45,20 +45,20 @@ router.post('/api/article', (req, res) =>{
 });
 
 // Update an existing Article
-// router.put('/api/article/:id', (req, res) => {
+router.put('/api/article/:id', (req, res) => {
 
-//    models.Article.findByPk(req.params.id)
-//    .then(article => {
-//        article.update({
-//            title: req.body.title,
-//            content: req.body.content
-//     }).then(article => {
+   models.Article.findByPk(req.params.id)
+   .then(article => {
+       article.update({
+           title: req.body.title,
+           content: req.body.content
+    }).then(article => {
 
-//         res.status(200).json({person: article});
-//     }).catch(e => console.log(e))
-//     })
-//        .catch(e => console.log(e))
-//    });
+        res.status(200).json({person: article});
+    }).catch(e => console.log(e))
+    })
+       .catch(e => console.log(e))
+   });
 
 //Delete an existing Article
 // router.delete('/api/article/:id', (req, res) => {
