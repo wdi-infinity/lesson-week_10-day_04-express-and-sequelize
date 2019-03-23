@@ -2,6 +2,7 @@ import express from 'express';
 import models from './models';
 import bodyParser from 'body-parser';
 import peopleRouter from './route/peopleRoutes';
+import articleRouter from './route/articleRoutes'
 
 
 const app = express();
@@ -11,6 +12,7 @@ const port = 3000;
 // Midle ware
 app.use(bodyParser.json());
 app.use(peopleRouter)
+app.use(articleRouter)
 
 
 
@@ -65,35 +67,12 @@ app.get('/', (req,res) => {
 // })
 
 
-// localhost:3000/api/articles
-
-app.get('/api/articles', (req , res) => {
-    models.Article.findAll().then(articles => {
-        res.status(200).json({ articles : articles });
-    }).catch(e => console.log(e));
-       
-    
-})
 
 
 
 
-// localhost:3000/api/articles/1
 
-app.get('/api/article/:id', (req, res) => {
-    if( !isNaN(req.params.id)){
-           models.Article.findByPk(req.params.id).then(article => {
-               if(article !== null){
-               res.status(200).json({ article: article });
-               } else {
-                   res.status(404).json({ error: 'Person Not Found' }); 
-               }
-           })
-           .catch(e => console.log(e));
-} else {
-   res.status(406).json({error: 'Invalid ID'})
-}
- });
+
 
 
 // http://localhost:3000/api/article/2/articles
