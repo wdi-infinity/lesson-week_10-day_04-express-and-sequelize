@@ -1,11 +1,7 @@
+// Refactored people routes to new router file
+
 import express from 'express';
 import models from '../models';
-import bodyParser from 'body-parser';
-
-
-// // middleware
-// app.use(bodyParser.json());
-
 
 //defind router
 const router=express.Router();
