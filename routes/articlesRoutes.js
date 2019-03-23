@@ -61,19 +61,19 @@ router.put('/api/article/:id', (req, res) => {
    });
 
 //Delete an existing Article
-// router.delete('/api/article/:id', (req, res) => {
-//     models.Article.findByPk(req.params.id)
-//     .then(article => {
-//        article.destroy()
-//          .then(() => {
-//          res.status(200).json({
-//          result: `Record ID ${req.params.id} Deleted`,
-//          success: true
-//         })
-//       })
-//       .catch(e => console.log(e))
-//      })
-//      .catch(e => console.log(e))
-// })
+router.delete('/api/article/:id', (req, res) => {
+    models.Article.findByPk(req.params.id)
+    .then(article => {
+       article.destroy()
+         .then(() => {
+         res.status(200).json({
+         result: `Record ID ${req.params.id} Deleted`,
+         success: true
+        })
+      })
+      .catch(e => console.log(e))
+     })
+     .catch(e => console.log(e))
+})
 
 export default router;
