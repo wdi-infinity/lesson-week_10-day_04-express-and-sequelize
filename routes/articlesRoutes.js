@@ -33,16 +33,16 @@ router.get('/api/articles', (req, res) => {
     })
 
     // Create new article
-// router.post('/api/article', (req, res) =>{
-//     models.Article.create(req.body)
-//     .then(articleNewFromDB => {
-//         res.status(201).json({
-//             article: articleNewFromDB
-//         });
-//     })
-//     .catch(e => console.log(e))
+router.post('/api/article', (req, res) =>{
+    models.Article.create(req.body)
+    .then(articleNewFromDB => {
+        res.status(201).json({
+            article: articleNewFromDB
+        });
+    })
+    .catch(e => console.log(e))
     
-// });
+});
 
 // Update an existing Article
 // router.put('/api/article/:id', (req, res) => {
