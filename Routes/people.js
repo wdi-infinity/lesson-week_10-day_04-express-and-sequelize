@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 
 
 const router = express.Router();
+router.use(bodyParser.json());
 
 // Get All people
 router.get('/api/people', (req, res) => {
