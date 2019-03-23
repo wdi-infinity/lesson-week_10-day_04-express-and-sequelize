@@ -2,6 +2,7 @@ import express from 'express';
 import models from './models';
 import bodyParser from 'body-parser';
 import peopleRouter from './routes/peopleRoutes';
+import articleRouter from './routes/articleRouter';
 
 const app = express();
 const port = 3000;
@@ -9,7 +10,8 @@ const port = 3000;
 /*** Middleware ***/
 
 app.use(bodyParser.json());
-app.use(peopleRouter)
+app.use(peopleRouter),
+app.use(articleRouter)
 
 /*** Routes ***/
 app.get('/', (req, res) => {
@@ -28,27 +30,8 @@ app.get('/', (req, res) => {
 //   { firstName: 'Abdullah', lastName: 'Alfehaid' }
 // ];
 
+  
 
-
-
-
-
-
-// GET of all API Articales
-//http://localhost:3000/api/articles
-app.get('/api/articles', (req, res) => {
-    models.Article.findAll().then(articles => {
-        res.status(200).json({ articles: articles });
-    }).catch(e => console.log(e))
-})
-
-// GET of one  API Articales by ID
-//http://localhost:3000/api/articles/1
-app.get('/api/articles/:id', (req, res) => {
-    models.Article.findByPk(req.params.id).then(articles => {
-        res.status(200).json({ articles: articles });
-    }).catch(e => console.log(e))
-})
 
 
 // //http://localhost:3000/api/person/1/articles
