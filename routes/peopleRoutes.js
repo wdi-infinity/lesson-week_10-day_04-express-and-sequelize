@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 
 
 const router = express.Router();
+app.use(bodyParser.json());
 
 router.get('/api/people', (req, res) => {
     models.Person.findAll()
@@ -19,9 +20,6 @@ router.get('/api/people', (req, res) => {
 
         })
         .catch(e => console.log(e));
-
-
-
 
 });
 //Get person by Record ID
