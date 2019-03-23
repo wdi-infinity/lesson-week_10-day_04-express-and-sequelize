@@ -11,6 +11,7 @@ router.get('/api/articles', (req, res) => {
     res.status(200).json({articles: articles});
     }).catch(e => console.log(e))
     })
+    
 
     //Get article by Record ID
     router.get('/api/article/:id', (req, res) => {
