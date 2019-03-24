@@ -1,6 +1,6 @@
 import express from 'express';
 import models from '../models'; //2 points cause it is under the app
-//import bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 
 const router = express.Router();
 
