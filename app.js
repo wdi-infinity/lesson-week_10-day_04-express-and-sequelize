@@ -2,12 +2,14 @@ import express from 'express';
 import models from './models';
 import bodyParser from 'body-parser';
 import peopleRouter from './routes/peopleRoutes'
+import articlesRouter from './routes/articlesRoutes'
 const app = express();
 const port=3000;
 /*** Middleware ***/
 
 app.use(bodyParser.json());
 app.use(peopleRouter);
+app.use(articlesRouter);
 // localhost: 3000/
 /** Routes path */
 app.get('/', (req, res) => {
@@ -25,20 +27,6 @@ app.get('/', (req, res) => {
 // ];
 
 
-// localhost: 3000/api/articles get all articles
-app.get('/api/articles', (req, res) => {
-  // res.status(200).json({message: 'working'});
-     models.Article.findAll().then(articles => {
-     res.status(200).json({articles: articles});
-     }).catch(e => console.log(e));
-})
-
-app.get('/api/article/:id', (req, res) => {
-  //  res.status(200).json({message: 'working'});
-    models.Article.findByPk(req.params.id).then(article => {
-    res.status(200).json({article: article});
-    }).catch(e => console.log(e));
-})
 
 
 // localhost: 3000/api/article/2/comments
