@@ -2,6 +2,7 @@ import express from 'express';
 import models from './models';
 import bodyParser from 'body-parser';
 import peopleRouter from './routes/peopleRoutes';
+import articlesRouter from './routes/articlesRoutes';
 
 const app = express();
 const port = 3000;
@@ -9,6 +10,7 @@ const port = 3000;
 
 app.use(bodyParser.json());
 app.use(peopleRouter);
+app.use(articlesRouter);
 
 /* Routes*/
 
