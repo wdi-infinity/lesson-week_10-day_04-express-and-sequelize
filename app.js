@@ -2,14 +2,20 @@ import express from 'express';
 import models from './models';
 import bodyParser from 'body-parser';
 import peopleRouter from './routes/peopleRoutes'
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import startegy from './lib/passportStartegy';
+import jwtOptions from './lib/passportOptions';
 
 const app = express();
 const port = 3000;
-
+const test_user = { id: 1, username: "Hala", password: "1234" }
+passport.use(startegy);
 /*** Middleware ***/
 
-app.use(bodyParser.json());
-app.use(peopleRouter);
+app.use(bodyParser.json())
+app.use(passport.initialize())
+app.use(peopleRouter)
 
 /*** Routs  ***/
 
@@ -20,14 +26,55 @@ app.get('/', (req, res) => {
     })
 })
 
-app.post('/api/login'), (req, res) => {
-    if (req.body.username && req.body.password) {
-        res.status(200).json({ msg: "username & password sent" })
 
+app.post('/api/login', (req, res) => {
+    if (req.body.username && req.body.password) {
+
+        // Find the user based on their username in our database
+        models.Person.findOne({
+            where: { username: req.body.username }
+        })
+            .then(person => {
+                if (person !== null) {
+                    if (person.password === req.body.password) {
+                        // Select the information we want to send to the user.
+                        const payload = { id: person.id };
+                        // Build a JWT token using the payload
+                        const token = jwt.sign(payload, jwtOptions.secretOrKey, { expiresIn: 60 });
+                        // Send the JWT Token to the user.
+                        res.status(200).json({ success: true, token: token });
+                    } else {
+                        res.status(401).json({ error: 'Invalid username or password' });
+                    }
+                } else {
+                    res.status(401).json({ error: 'Invalid username or password' });
+                }
+            })
+            .catch(e => console.log(e));
+
+        // // This should be a Database call.
+        // if(req.body.username === test_user.username) {
+        //   if(req.body.password === test_user.password) {
+        //     // Select the information we want to send to the user.
+        //     const payload = { id: test_user.id };
+        //     // Build a JWT token using the payload
+        //     const token = jwt.sign(payload, jwtOptions.secretOrKey, { expiresIn: 60 });
+        //     // Send the JWT Token to the user.
+        //     res.status(200).json({ success: true, token: token });
+        //   } else {
+        //     res.status(401).json({ error: 'Invalid username or password' });
+        //   }
+        // } else {
+        //   res.status(401).json({ error: 'Invalid username or password' });
+        // }
     } else {
-        res.status(400).json({ msg: "username & password required" })
+        res.status(400).json({ error: 'Username & Password Required' });
     }
-}
+});
+
+app.get('/api/mymovies', passport.authenticate('jwt', { session: false }), (req, res) => {
+    res.status(200).json({ message: "you should only see this vaild token" });
+})
 
 const people = [
     { firstName: 'fajer', lastName: 'saleh' },
@@ -96,14 +143,22 @@ app.get('/api/person/:id/articles', (req, res) => {
 
 });
 
+// models.sequelize.sync({ force: true }).then(() => {
+//     console.log('sync complete');
+
+//     models.Person.create({
+//         first_name: 'Majd',
+//         last_name: 'Saleh',
+//         username: 'glllory',
+//         password: '1234'
+//     });
+
+//     app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
+// });
+
+
 models.sequelize.sync().then(() => {
-    console.log('sync complete')
-    // models.Article.create({
-    //     title: "Test",
-    //     content: "bla bla bla",
-    //     PersonId: 1
-    // });
+    console.log('sync complete');
 
-    app.listen(port, () => console.log(`express-api listening on port ${port}!`))
-})
-
+    app.listen(port, () => console.log(`express-api app listening on port ${port}!`));
+});
