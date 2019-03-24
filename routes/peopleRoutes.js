@@ -1,11 +1,12 @@
-import express from 'express';
-import models from '../models'; //2 points cause it is under the app
-import bodyParser from 'body-parser';
+// import express from 'express';
+// import models from '../models'; //2 points cause it is under the app
+// import bodyParser from 'body-parser';
 
 const router = express.Router();
 
 
 
+//Get All people
 router.get('/api/people', (req, res) => {
     models.Person.findAll()
     //read data from database
@@ -17,6 +18,8 @@ router.get('/api/people', (req, res) => {
       .catch(e => console.log(e));
   });
 
+  //Get person by Recored ID
+//http://localhost:3000/api/person/2
 
   router.get('/api/person/:id', (req, res) => {
     if( !isNaN(req.params.id) ) {
