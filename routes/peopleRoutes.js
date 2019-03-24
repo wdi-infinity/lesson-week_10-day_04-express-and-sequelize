@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 
 const router = express.Router();
 
-
+router.use(bodyParser.json());
 
 
 // Get All People 
