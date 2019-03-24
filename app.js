@@ -20,6 +20,15 @@ app.get('/', (req, res) => {
     })
 })
 
+app.post('/api/login'), (req, res) => {
+    if (req.body.username && req.body.password) {
+        res.status(200).json({ msg: "username & password sent" })
+
+    } else {
+        res.status(400).json({ msg: "username & password required" })
+    }
+}
+
 const people = [
     { firstName: 'fajer', lastName: 'saleh' },
     { firstName: 'fajer', lastName: 'saleh' },
