@@ -9,5 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     Article.belongsTo(models.Person);
 
   };
+
+
   return Article;
 };
