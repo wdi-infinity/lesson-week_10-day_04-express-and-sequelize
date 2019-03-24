@@ -2,6 +2,7 @@ import express from 'express';
 import models from './models';
 import bodyParser from 'body-parser';
 import peopleRouter from './routes/peopleRoutes';
+import articlesRoutes from './routes/articlesRoutes';
 
 const app = express();
 const port = 3000;
@@ -10,6 +11,7 @@ const port = 3000;
 // run between req and res
 app.use(bodyParser.json());
 app.use(peopleRouter);
+app.use(articlesRoutes);
 /**** Routes ***/
 
 // Root path
@@ -18,74 +20,6 @@ app.get('/', (req, res) => {
         message: "Hello WDI-Infinity!"
     });
 })
-
-// localhost:3000
-// localhost:3000/
-
-
-// http://localhost:3000/api/articles
-
-app.get('/api/articles', (req, res) => {
-    models.Article.findAll()
-        .then(articles => {
-            res.status(200).json({ articles: articles });
-        })
-        .catch(e => console.log(e));
-
-})
-
-// list single Article by record ID
-// http://localhost:3000/api/article/1
-
-app.get('/api/article/:id', (req, res) => {
-    models.Article.findByPk(req.params.id)
-        .then(article => {
-            res.status(200).json({ article: article });
-        }).catch(e => console.log(e));
-})
-
-app.post('/api/article', (req, res) => {
-    models.Article.create(req.body)
-        .then(article => {
-            res.status(201).json({ article: article });
-        })
-        .catch(e => console.log(e));
-})
-
-
-// delete single article by record ID
-app.delete('/api/article/:id', (req, res) => {
-    models.Article.findByPk(req.params.id)
-        .then(article => {
-            article.destroy().then(() => {
-                res.status(201).json({
-                    result: `Record ID ${req.params.id} Deleted`,
-                    success: true
-                });
-            })
-                .catch(e => console.log(e));
-        })
-        .catch(e => console.log(e));
-
-})
-
-//  Update an existiong article by id , just updated the title and content
-app.put('/api/article/:id', (req, res) => {
-    models.Article.findByPk(req.params.id)
-        .then(article => {
-            article.update({
-                title: req.body.title,
-                content: req.body.content
-            })
-                .then(article => {
-                    res.status(200).json({ article: article });
-                })
-                .catch(e => console.log(e));
-        })
-        .catch(e => console.log(e));
-})
-
-
 
 models.sequelize.sync()
     .then(() => {
